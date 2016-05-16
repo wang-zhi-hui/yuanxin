@@ -1,0 +1,15 @@
+{
+  "name": "YuanXin",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react-native": "^0.21.0",
+    "react-native-amap-location": "0.0.2",
+    "react-native-code-push": "^1.10.0-beta",
+    "react-native-keyboard-aware-scrollview": "0.0.7",
+    "react-native-swipeout": "^2.0.12"
+  }
+}

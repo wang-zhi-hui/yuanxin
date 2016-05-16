@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/exploded-aar/YuanXin/react-native-webview-bridge/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9eefb08db9c282e7ee754793003e37f00b04644f">
+        <dex dex="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/pre-dexed/debug/classes-5f922471abf00522cb87c2c7983ca893c707132f.jar" />
+    </item>
+
+</items>
