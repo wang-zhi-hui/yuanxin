@@ -27,7 +27,8 @@ var FormRowInput = React.createClass({
         {
             let _onFocus = this.props._onFocus ? (event) => this.props._onFocus(event, this.props.controlTag) : null;
             showFromInput = (
-                <View style={this.props.formRow} onLayout={this.props.setTextInputOffset ? (event) => this.props.setTextInputOffset(event, this.props.controlTag) : null}>
+                <View style={this.props.formRow}
+                      onLayout={this.props.setTextInputOffset ? (event) => this.props.setTextInputOffset(event, this.props.controlTag) : null}>
                     <View style={this.props.itemLeft}>
                         <Text allowFontScaling={false} style={StyleUtil.FormFontLeftStyle}>{this.props.leftText}</Text>
                     </View>
@@ -52,10 +53,13 @@ var FormRowInput = React.createClass({
         {
             showFromInput = (
                 <View style={this.props.formRow}>
-                    <View style={this.props.itemLeft}><Text allowFontScaling={false}
-                                                            style={StyleUtil.FormFontLeftStyle}>{this.props.leftText}</Text></View>
-                    <View style={this.props.itemRight}><Text numberOfLines={2} allowFontScaling={false}
-                                                             style={StyleUtil.FormFontRightStyle}>{this.props.value}</Text></View>
+                    <View style={this.props.itemLeft}>
+                        <Text allowFontScaling={false} style={StyleUtil.FormFontLeftStyle}>{this.props.leftText}</Text>
+                    </View>
+                    <View style={this.props.itemRight}>
+                        <Text numberOfLines={2} allowFontScaling={false}
+                              style={StyleUtil.FormFontRightStyle}>{this.props.value}</Text>
+                    </View>
                 </View>
             );
         }

@@ -12,31 +12,36 @@ import Util from '../utils/Util';
 var TabNavigator = React.createClass({
     render(){
         let dataList = [];
-        for (let i = 0; i < this.props.tabList.length; i++) {
+        let itemLine = [styles.tabNavigatorItemLine, {backgroundColor: this.props.borderColor || '#fff'}];
+        itemLine.push({height: this.props.itemHiehgt || 25});
+        this.props.tabList.forEach((v, i, a)=> {
             let itemStyle = [];
             itemStyle.push(styles.tabNavigatorItem);
-            if (this.props.tabList[i].selected)
+            itemStyle.push({height: this.props.itemHiehgt || 25});
+            if (v.selected)
                 itemStyle.push({backgroundColor: this.props.itemSelectedColor || '#fff'});
             else
                 itemStyle.push({backgroundColor: this.props.itemColor || '#333333'});
             let textColor = {};
-            if (this.props.tabList[i].selected)
+            if (v.selected)
                 textColor.color = this.props.textSelectedColor || null;
             else
                 textColor.color = this.props.textColor || '#fff';
+            let itemTextStyle = [textColor];
+            itemTextStyle.push({fontSize: this.props.fontSize || 13});
             dataList.push(
                 <TouchableHighlight key={Util.GUID()} style={itemStyle}
-                                    onPress={this.props.tabList[i].click?this.props.tabList[i].click:null}
+                                    onPress={v.click?v.click:null}
                                     underlayColor={this.props.textSelectedColor||'#fff'}>
                     <Text allowFontScaling={false}
-                          style={[styles.tabNavigatorText,textColor]}>
-                        {this.props.tabList[i].text}
+                          style={itemTextStyle}>
+                        {v.text}
                     </Text>
                 </TouchableHighlight>);
-            if (i != this.props.tabList.length - 1)
+            if (i != a.length - 1)
                 dataList.push(<View key={Util.GUID()}
-                                    style={[styles.tabNavigatorItemLine,{backgroundColor:this.props.borderColor||'#fff'}]}/>);
-        }
+                                    style={itemLine}/>);
+        });
         return (
             <View style={[styles.tabNavigator,{borderColor: this.props.borderColor||'#fff'}]}>
                 {dataList}
@@ -51,9 +56,6 @@ var styles = StyleSheet.create({
         borderWidth: 1,
         overflow: 'hidden'
     },
-    tabNavigatorText: {
-        fontSize: 13
-    },
     tabNavigatorItemLine: {
         height: 25,
         width: 1
@@ -63,7 +65,6 @@ var styles = StyleSheet.create({
         paddingRight: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 25,
         flex: 1,
         flexDirection: 'column'
     }

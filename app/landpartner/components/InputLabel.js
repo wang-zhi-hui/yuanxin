@@ -26,16 +26,23 @@ var InputLabel = React.createClass({
 		}
 		return (
 			<View style={styles.container}>
-				<Text style={styles.labelText}>
-					{this.props.label}
-				</Text>
-				<TextInput
-					onChangeText={(text) => this.getInputValue(text)}
-					style={styles.labelInput}
-					placeholder="请输入"
-					keyboardType={this.props.boardType}
-					defaultValue={this.state.value}
-				/>
+				<View style={styles.labelTextView}>
+					<Text style={styles.labelLeftText}>
+						{this.props.label}
+					</Text>
+				</View>
+				<View style={styles.labelTextRightView}>
+						<TextInput
+							underlineColorAndroid="transparent"
+							placeholderTextColor="#a7a7a7"
+							onChangeText={(text) => this.getInputValue(text)}
+							style={styles.labelInput}
+							placeholder="请输入"
+							placeholderTextColor="#a7a7a7"
+							keyboardType={this.props.boardType}
+							defaultValue={this.state.value}
+						/>
+					</View>
 				{tag}
 			</View>
 		)
@@ -45,30 +52,36 @@ var InputLabel = React.createClass({
 
 const styles = StyleSheet.create({
 	container: {
-		height: 50,
+		height: 40,
 		flexDirection: 'row',
 		borderBottomWidth: 1,
 		borderBottomColor: '#ebebeb',
 		paddingLeft: 10
 	},
-	labelText: {
-		width: 100,
-		height: 30,
-		lineHeight: 30,
-		color:'#000',
-		fontSize:16,
-		marginTop: 20
+	labelTextView:{
+		flex:3,
+		justifyContent: 'center',
+	},
+	labelTextLeftView:{
+		justifyContent:'center',
+	},
+	labelLeftText: {
+		color:'#3b3b3b',
+		fontSize:15
+	},
+	labelTextRightView:{
+		flex: 7,
+		justifyContent:'center',
+		alignSelf:'center'
 	},
 	labelInput: {
-		flex: 1,
-		height: 50,
-		lineHeight: 50,
-		fontSize:16,
-		marginTop:9,
-		marginLeft:20,
+		height: 40,
+		fontSize: 15,
+		color: '#a7a7a7',
+		paddingTop:11,
+		paddingBottom:10
 
-	},
-
+	}
 })
 
 module.exports = InputLabel;

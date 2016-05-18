@@ -22,11 +22,11 @@ var MainToolbar = React.createClass({
         this.props.bottomMenus.forEach((item, index, array)=> {
             let selectImage = item.isSelected ? item.iconSelected : item.icon;
             menuList.push(
-                <TouchableHighlight style={StyleUtil.touchitem} underlayColor={hoverActionColor}
+                <TouchableHighlight style={StyleUtil.touchItem} underlayColor={hoverActionColor}
                                     onPress={()=> this.onActionClick(item.value)} key={item.value}>
-                    <View style={StyleUtil.menubaritem}>
+                    <View style={StyleUtil.menuBarItem}>
                         <Image style={StyleUtil.menuImage} source={selectImage}/>
-                        <View style={StyleUtil.menuitemrow}>
+                        <View style={StyleUtil.menuItemRow}>
                             <Text allowFontScaling={false}
                                   style={[StyleUtil.actionText,item.isSelected?StyleUtil.actionSelect:null]}>{item.text}</Text>
                         </View>
@@ -34,9 +34,9 @@ var MainToolbar = React.createClass({
                 </TouchableHighlight>);
         });
         return (
-            <View style={StyleUtil.menubarBottom}>
+            <View style={StyleUtil.menuBarBottom}>
                 <View style={StyleUtil.breakLongLineItem}/>
-                <View style={StyleUtil.menubar}>{menuList}</View>
+                <View style={StyleUtil.menuBar}>{menuList}</View>
             </View>
         );
     }

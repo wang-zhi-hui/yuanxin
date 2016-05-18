@@ -5,11 +5,6 @@
 var React = require('react-native');
 
 var {
-    AppRegistry,
-    Component,
-    StyleSheet,
-    Text,
-    View,
     Platform
     } = React;
 

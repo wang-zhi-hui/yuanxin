@@ -16,7 +16,7 @@ export default class Rules extends Component{
   render() {
     return (
       <View style={styles.container}>
-        <ActionBar actionName="规则"  isDefaultBack={this.props.jumpPop} />
+        <ActionBar actionName="用户协议"  isDefaultBack={this.props.jumpPop} />
         <View style={styles.greyLine}></View>
         <TouchRowControl text="合伙人须知" userTouch={() => this.props.jumpPushPage(Rule1, "rule1")} />
         <View style={styles.greyLine}></View>

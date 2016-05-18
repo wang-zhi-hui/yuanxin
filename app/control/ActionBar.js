@@ -26,7 +26,7 @@ var ActionBar = React.createClass({
             leftButtonClick = this.backClick;
             leftButton = (
                 <View style={StyleUtil.ActionBarLeftTouch}>
-                    <Image style={{height:15,width:9,marginLeft:10}} source={require('../images/left_back.png')}/>
+                    <Image style={StyleUtil.ActionBarLeftBackImage} source={require('../images/left_back.png')}/>
                 </View>
             );
         }
@@ -63,7 +63,7 @@ var ActionBar = React.createClass({
         }
         var iosBar = null;
         if (Platform.OS == 'ios') {
-            iosBar = <View style={StyleUtil.ActionBarIOSTop} />
+            iosBar = <View style={StyleUtil.ActionBarIOSTop}/>
         }
         let actionTitle = null;
         if (this.props.titleTab) {
@@ -76,8 +76,9 @@ var ActionBar = React.createClass({
         else {
             actionTitle = (
                 <TouchableHighlight onPress={this.props.click||null} underlayColor={hoverActionColor}
-                                    style={StyleUtil.ActionBarTitle}><Text allowFontScaling={false}
-                                                                           style={StyleUtil.ActionBarTitleText}>{this.props.actionName}</Text></TouchableHighlight>
+                                    style={StyleUtil.ActionBarTitle}>
+                    <Text allowFontScaling={false} style={StyleUtil.ActionBarTitleText}>{this.props.actionName}</Text>
+                </TouchableHighlight>
             );
         }
         return (

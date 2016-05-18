@@ -81,30 +81,30 @@ export default class ProcessNav extends Component {
    Ncontainer:{
      height: 40,
 		flexDirection:'row',
-    alignItems: 'center',
-    alignSelf: 'stretch'
+        alignItems: 'center',
+         alignSelf: 'stretch'
 	},
 	cell:{
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center'
+        flex: 1,
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        alignItems: 'center'
 	},
 	cellBd:{
-    width:1,
-    height: 30,
+        width:1,
+        height: 30,
 		backgroundColor:'#efeff4',
 	},
 	textDefault:{
 		fontSize:18,
 		color:'#999'
 	},
-  textNotOK: {
-    fontSize: 18,
-    color: '#FF0000'
+    textNotOK: {
+        fontSize: 18,
+        color: '#FF0000'
   },
-  textOK: {
-    fontSize: 18,
-    color: '#00CC00'
+    textOK: {
+        fontSize: 18,
+        color: '#00CC00'
   }
  })

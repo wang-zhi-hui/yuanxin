@@ -8,9 +8,7 @@ var {
     StyleSheet,
     View,
     Image,
-    Platform,
-    ProgressBarAndroid,
-    ActivityIndicatorIOS
+    ProgressBarAndroid
     } = React;
 var ImageControl = React.createClass({
     getInitialState(){
@@ -32,21 +30,13 @@ var ImageControl = React.createClass({
         this.setState(this.state);
     },
     render(){
-        let lodingView = null;
+        let loadingView = this.state.loading ? <ProgressBarAndroid styleAttr='Inverse'/> : null;
         let imageStyle = null;
-        if (this.state.loading) {
-            if (Platform.OS == 'android') {
-                lodingView = <ProgressBarAndroid styleAttr='Inverse'/>;
-            }
-            else {
-                lodingView = <ActivityIndicatorIOS size="large"/>;
-            }
-        }
-        let imageProp=null;
-        if(this.props.imageUri)
-            imageProp={uri:this.props.imageUri};
+        let imageProp = null;
+        if (this.props.imageUri)
+            imageProp = {uri: this.props.imageUri};
         else
-            imageProp=this.props.imageObj;
+            imageProp = this.props.imageObj;
         return (
             <View style={[this.props.imageStyle,styles.loadingImage]}>
                 <Image source={imageProp}
@@ -55,7 +45,7 @@ var ImageControl = React.createClass({
                        onLoad={(e)=>this.imageOnLoad(e)}>
                     {this.props.control || null}
                 </Image>
-                {lodingView}
+                {loadingView}
             </View>
         );
     }

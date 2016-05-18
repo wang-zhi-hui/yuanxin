@@ -8,8 +8,6 @@ import React, {
   View
 } from 'react-native'
 import InputLabel from './InputLabel'
-import Button from './button'
-import ProcessNav from './ProcessNav'
 import ActionBar from '../../control/ActionBar'
 import StorageUtil from '../../utils/StorageUtil'
 import SelectPhotoControl from '../../control/SelectPhotoControl'
@@ -183,10 +181,11 @@ var ProgramInfoEdit = React.createClass({
     return (
       <ScrollView style={styles.container}>
       <ActionBar actionName="推荐" isDefaultBack={this.props.jumpPop}/>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>土地/项目转让</Text>
-        </View>
-        <ProcessNav status={2} />
+        {// <View style={styles.header}>
+        //   <Text style={styles.headerText}>土地/项目转让</Text>
+        // </View>
+        // <ProcessNav status={2} />
+      }
         <View style={styles.greyLine}>
         </View>
         <View style={styles.header}>
@@ -204,12 +203,18 @@ var ProgramInfoEdit = React.createClass({
           </View>
         </View>
         <View style={styles.btnGroup}>
-          <View style={styles.nexBtn}>
-            <Button btnText="保存" clickFun={this._save} />
-          </View>
-          <View style={styles.nexBtn}>
-            <Button btnText="提交" clickFun={this._nextFun} />
-          </View>
+          <ButtonControl
+              userClick={this._save.bind(this)}
+              buttonStyle={styles.btnContainer}
+              buttonTextStyle={styles.btnText}
+              buttonText="保存"
+          />
+          <ButtonControl
+              userClick={this._submit.bind(this)}
+              buttonStyle={styles.btnContainer}
+              buttonTextStyle={styles.btnText}
+              buttonText="提交"
+          />
         </View>
       </ScrollView>
     )
@@ -260,6 +265,23 @@ const styles = StyleSheet.create({
   },
   btnGroup: {
     flexDirection: 'row'
-  }
+  },
+  btnContainer: {
+    height:40,
+    flex:5,
+    margin:10,
+    marginTop: 20,
+    marginBottom:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#ff5001',
+  },
+  btnText:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    color:'#fff',
+    fontSize:15,
+  },
 })
 module.exports = ProgramInfoEdit;

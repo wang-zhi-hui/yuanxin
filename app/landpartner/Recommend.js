@@ -21,9 +21,13 @@ var Recommend = React.createClass({
     }
   },
   componentWillMount() {
+    this.props.maskViewHandler(true)
       this.props.sendPostJSON({
         url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/LoadRecommendList',
-        success: (response) => this.setState({dataSource: ds.cloneWithRows(JSON.parse(response.message).data.LandInfo)})
+        success: (response) => {
+          this.props.maskViewHandler(false)
+          this.setState({dataSource: ds.cloneWithRows(JSON.parse(response.message).data.LandInfo)})
+        }
       })
   },
   _next(result) {
@@ -33,7 +37,7 @@ var Recommend = React.createClass({
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2})
     return (
       <View style={styles.container}>
-        <ActionBar actionName={this.state.actionName} isDefaultBack={this.props.jumpPop} />
+        <ActionBar actionName="我的推荐" isDefaultBack={this.props.jumpPop} />
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <RecommendItem {...rowData} {...this.props} /> }
@@ -46,7 +50,7 @@ var Recommend = React.createClass({
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get('window').height - 30,
+    height: Dimensions.get('window').height,
     flexDirection: 'column',
     backgroundColor: '#FFFFFF'
   },

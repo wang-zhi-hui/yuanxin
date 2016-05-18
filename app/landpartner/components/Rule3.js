@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   showText: {
-    marginTop: 10,
+    margin: 10,
     fontSize: 16,
     lineHeight: 24
   }

@@ -14,20 +14,20 @@ var MenuGroup = React.createClass({
     render(){
         let menuList = [];
         let menuLine;
-        for (let i = 0; i < this.props.menuList.length; i++) {
+        this.props.menuList.forEach((v, i, a)=> {
             if (i == 0 || i % this.props.lineCount == 0)
                 menuLine = [];
             menuLine.push(
                 <TouchableHighlight key={Util.GUID()} style={styles.contentItem}
                                     underlayColor={this.props.clickColor||'transparent'}
-                                    onPress={this.props.menuList[i].click}>
+                                    onPress={v.click}>
                     <View style={styles.contentItem}>
-                        <Image style={styles.contentItemImage} source={this.props.menuList[i].icon}/>
+                        <Image style={styles.contentItemImage} source={v.icon}/>
                         <Text allowFontScaling={false}
-                              style={styles.contentItemText}>{this.props.menuList[i].text}</Text>
+                              style={styles.contentItemText}>{v.text}</Text>
                     </View>
                 </TouchableHighlight>);
-            if (i != this.props.menuList.length - 1) {
+            if (i != a.length - 1) {
                 if ((i + 1) % this.props.lineCount == 0) {
                     menuList.push(
                         <View key={Util.GUID()} style={styles.content}>
@@ -37,7 +37,7 @@ var MenuGroup = React.createClass({
                 }
             }
             else {
-                if (this.props.menuList.length >= this.props.lineCount && this.props.lineCount % this.props.menuList.length == 0) {
+                if (a.length >= this.props.lineCount && this.props.lineCount % a.length == 0) {
                     menuList.push(
                         <View key={Util.GUID()} style={styles.content}>
                             {menuLine}
@@ -45,8 +45,8 @@ var MenuGroup = React.createClass({
                     );
                 }
                 else {
-                    let differCount = this.props.menuList.length > this.props.lineCount ?
-                    this.props.lineCount - this.props.menuList.length % this.props.lineCount : this.props.lineCount - this.props.menuList.length;
+                    let differCount = a.length > this.props.lineCount ?
+                    this.props.lineCount - a.length % this.props.lineCount : this.props.lineCount - a.length;
                     for (let j = 0; j < differCount; j++) {
                         menuLine.push(
                             <View key={Util.GUID()} style={styles.contentItem}>
@@ -60,7 +60,7 @@ var MenuGroup = React.createClass({
                     );
                 }
             }
-        }
+        });
         return <View>{menuList}</View>;
     }
 });

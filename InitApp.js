@@ -10,10 +10,8 @@ var {
     Image,
     Dimensions,
     ProgressBarAndroid,
-    ActivityIndicatorIOS,
     TouchableHighlight,
-    Platform,
-    PixelRatio
+    Platform
     } = React;
 var StorageUtil = require('./app/utils/StorageUtil');
 var ConfigUtil = require('./app/utils/ConfigUtil');
@@ -55,7 +53,6 @@ var InitApp = React.createClass({
                 this.setState(this.state);
             }
         }
-
     },
     getHtttpError(error){
         if (!this.state.isLoadError) {
@@ -180,7 +177,9 @@ var InitApp = React.createClass({
                 loadingView = (
                     <TouchableHighlight underlayColor={'transparent'} onPress={()=>this.refreshData()}>
                         <Image style={styles.initAppImage} source={require('./app/images/initapp.png')}>
-                            <View><Text allowFontScaling={false}>{'加载错误,点击重新加载!'}</Text></View>
+                            <View>
+                                <Text allowFontScaling={false}>{'加载错误,点击重新加载!'}</Text>
+                            </View>
                         </Image>
                     </TouchableHighlight>
                 );
@@ -218,6 +217,7 @@ var InitApp = React.createClass({
 });
 var styles = StyleSheet.create({
     loading: {
+        marginTop: 20,
         flexDirection: 'row',
         flex: 1,
         alignItems: 'center',

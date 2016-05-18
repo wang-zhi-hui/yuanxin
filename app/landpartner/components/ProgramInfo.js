@@ -1,6 +1,7 @@
 import React, {
   Component,
   Platform,
+  Dimensions,
   StyleSheet,
   Text,
   Picker,
@@ -8,8 +9,7 @@ import React, {
   View
 } from 'react-native'
 import InputLabel from './InputLabel'
-import Button from './button'
-import ProcessNav from './ProcessNav'
+import ButtonControl from '../../control/ButtonControl'
 import ActionBar from '../../control/ActionBar'
 import LandIndex from '../LandIndex'
 import Recommend from '../Recommend'
@@ -58,11 +58,11 @@ var ProgramInfo = React.createClass({
         success: (response) => {
           this.props.maskViewHandler(false)
           if (JSON.parse(response.message).status == 'SUCCESS') {
-            alert("提交成功")
+            Util.AlertMessage("提交成功")
             this.props.jumpReplacePage(Recommend, 'recommend')
           } else {
-            alert("提交失败")
-            this.props.jumpReplacePage(Recommend, 'recommend')
+            Util.AlertMessage("提交失败")
+            this.props.jumpReplacePage(LandIndex, 'landIndex')
           }
         }
       })
@@ -88,18 +88,27 @@ var ProgramInfo = React.createClass({
   selectPhotoSuccess(selectData) {
     let imgItems = JSON.parse(selectData.data)
     let imgBase
-    let photoArray = []
+
     if (selectData.FilePath) {
       imgBase = JSON.parse(selectData.FilePath)
     }
     if (imgBase) {
-      photoArray.push({url: imgBase[0], base: imgItems[0]})
+      let photoArray = this.state.photoArray
+      for (let i = 0; i < imgBase.length; i++) {
+        photoArray.push({url: imgBase[i], base: imgItems[i]})
+      }
+      this.setState({
+        photoArray: photoArray
+      })
     } else {
-      photoArray.push({url: imgItems[0]})
+      let photoArray = []
+      for (let item of imgItems) {
+        photoArray.push({url: item})
+      }
+      this.setState({
+        photoArray: photoArray
+      })
     }
-    this.setState({
-      photoArray: photoArray
-    })
   },
   androidImageSuccess(imageList){
       let tempPhotoArray = this.state.photoArray
@@ -115,10 +124,10 @@ var ProgramInfo = React.createClass({
         success: (response) => {
           this.props.maskViewHandler(false)
           if (JSON.parse(response.message).status == 'SUCCESS') {
-            alert("提交成功")
+            Util.AlertMessage("提交成功")
             this.props.jumpReplacePage(Recommend, 'recommend')
           } else {
-            alert("提交失败")
+            Util.AlertMessage("提交失败")
             this.props.jumpReplacePage(Recommend, 'recommend')
           }
         }
@@ -130,10 +139,21 @@ var ProgramInfo = React.createClass({
       else
           this.uploadFileOneSuccess(e);
   },
+  // deleteSelectPhone(url, tag){
+  //     if (tag == 'photoArray')
+  //         this.state.photoArray = [];
+  //     this.setState(this.state);
+  // },
   deleteSelectPhone(url, tag){
-      if (tag == 'photoArray')
-          this.state.photoArray = [];
-      this.setState(this.state);
+    if (tag == 'photoArray') {
+        for (let i = 0; i < this.state.photoArray.length; i++) {
+            if (url == this.state.photoArray[i].url) {
+                this.state.photoArray.splice(i, 1);
+                break;
+            }
+        }
+    }
+    this.setState(this.state);
   },
   getUserSelectPhotoList(){
       let uploadList = [];
@@ -157,10 +177,10 @@ var ProgramInfo = React.createClass({
         success: (response) => {
           this.props.maskViewHandler(false)
           if (JSON.parse(response.message).status == 'SUCCESS') {
-            alert("保存成功")
+            Util.AlertMessage("保存成功")
             this.props.jumpReplacePage(Recommend, 'recommend')
           } else {
-            alert("保存失败")
+            Util.AlertMessage("保存失败")
             this.props.jumpReplacePage(Recommend, 'recommend')
           }
         }
@@ -170,60 +190,63 @@ var ProgramInfo = React.createClass({
   render() {
     let photoProps = {
       selectPhoto: this.state.photoArray,
-      maxCount: 1,
+      maxCount: 9,
       selectTag: 'photoArray',
       deleteSelectPhone: this.deleteSelectPhone,
       selectPhotoHandler: this.props.selectPhotoHandler,
       selectPhotoSuccess: this.selectPhotoSuccess
     }
     return (
-      <ScrollView style={styles.container}>
-      <ActionBar actionName="推荐"/>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>土地/项目转让</Text>
-        </View>
-        <ProcessNav status={2} />
-        <View style={styles.greyLine}>
-        </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>项目信息</Text>
-        </View>
-        <InputLabel label="公司名称" tabs="CompanyName" getValue={this.getValue} />
-        <InputLabel label="联系人" tabs="Contacts" getValue={this.getValue} />
-        <InputLabel label="联系电话" boardType="numeric" tabs="ContactPhone" getValue={this.getValue} />
-        <InputLabel label="建设情况" tabs="ConstructionSituation" getValue={this.getValue} />
-        <InputLabel label="其他信息" tabs="OtherInfo" getValue={this.getValue} />
-        <View style={styles.photoContainer}>
-          <Text style={styles.photoText}>上传图片</Text>
-          <View style={styles.photo}>
-            <SelectPhotoControl {...photoProps} />
+      <View style={styles.container}>
+        <ActionBar actionName="项目信息" isDefaultBack={this.props.jumpPop} />
+        <ScrollView>
+          <InputLabel label="公司名称" tabs="CompanyName" getValue={this.getValue} />
+          <InputLabel label="联系人" tabs="Contacts" getValue={this.getValue} />
+          <InputLabel label="联系电话" boardType="numeric" tabs="ContactPhone" getValue={this.getValue} />
+          <InputLabel label="建设情况" tabs="ConstructionSituation" getValue={this.getValue} />
+          <InputLabel label="其他信息" tabs="OtherInfo" getValue={this.getValue} />
+          <View style={styles.photoContainer}>
+            <Text style={styles.photoText}>上传图片</Text>
+            <View style={styles.photo}>
+              <SelectPhotoControl {...photoProps} />
+            </View>
           </View>
-        </View>
-        <View style={styles.btnGroup}>
-          <View style={styles.nexBtn}>
-            <Button btnText="保存" clickFun={this._save} />
+          <View style={styles.btnGroup}>
+            <ButtonControl
+                userClick={this._save}
+                buttonStyle={styles.btnContainer}
+                buttonTextStyle={styles.btnText}
+                buttonText="保存"
+            />
+            <ButtonControl
+                userClick={this._save}
+                buttonStyle={styles.btnContainer}
+                buttonTextStyle={styles.btnText}
+                buttonText="提交"
+            />
           </View>
-          <View style={styles.nexBtn}>
-            <Button btnText="提交" clickFun={this._nextFun} />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
+
     )
   }
 })
 const styles = StyleSheet.create({
   container: {
+    height: Dimensions.get('window').height,
     backgroundColor: '#FFFFFF'
   },
   header: {
+    height:44,
     borderBottomWidth: 1,
-    borderBottomColor: '#FF5001',
+    borderBottomColor: '#eaeaea',
     borderStyle: 'solid',
-    padding: 5
+    padding: 10
   },
   headerText: {
-    fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 15,
+    marginTop:8,
+    color:'#3b3b3b'
   },
   greyLine: {
     height: 10,
@@ -242,8 +265,8 @@ const styles = StyleSheet.create({
   },
   photoText: {
     margin: 10,
-    fontSize: 16,
-    color: '#000'
+    fontSize: 15,
+    color: '#3b3b3b'
   },
   photo: {
     position: 'absolute',
@@ -256,6 +279,22 @@ const styles = StyleSheet.create({
   },
   btnGroup: {
     flexDirection: 'row'
-  }
+  },
+  btnContainer: {
+    height:40,
+    flex:5,
+    margin:10,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#ff5001',
+  },
+  btnText:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    color:'#fff',
+    fontSize:15,
+  },
 })
 module.exports = ProgramInfo;

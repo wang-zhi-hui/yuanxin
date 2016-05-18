@@ -16,16 +16,18 @@ var YuanXinSelectItem = React.createClass({
         this.props.tabList.forEach((v, i, a)=> {
             if (i == 0 || i % this.props.lineCount == 0)
                 menuLine = [];
-            let itemTextStyle = [styles.selectItemText];
+            let itemTextStyle = {};
+            itemTextStyle.fontSize = this.props.fontSize || 13;
             let itemStyle = [styles.selectItem, styles.selectItemBorder];
+            itemStyle.push({height: this.props.itemHeight || 25});
             itemStyle.push({borderColor: this.props.borderColor || '#fff', marginRight: this.props.spacing || 10});
             if (v.selected) {
                 itemStyle.push({backgroundColor: this.props.itemSelectedColor || null});
-                itemTextStyle.push({color: this.props.textSelectedColor || null});
+                itemTextStyle.color = this.props.textSelectedColor || null;
             }
             else {
                 itemStyle.push({backgroundColor: this.props.itemColor || null});
-                itemTextStyle.push({color: this.props.textColor || null});
+                itemTextStyle.color = this.props.textColor || null;
             }
             menuLine.push(
                 <TouchableHighlight key={Util.GUID()} style={itemStyle}
@@ -86,12 +88,8 @@ var styles = StyleSheet.create({
     selectItem: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 25,
         flex: 1,
         flexDirection: 'column'
-    },
-    selectItemText: {
-        fontSize: 15
     }
 });
 module.exports = YuanXinSelectItem;

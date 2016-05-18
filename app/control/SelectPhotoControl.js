@@ -17,7 +17,7 @@ var {
     } = React;
 var StyleUtil = require('../utils/StyleUtil');
 var SelectPhotoUtil = require('../utils/SelectPhotoUtil');
-var ImageControl = require('../control/ImageControl');
+var ImageControl = require('./ImageControl');
 var Util = require('../utils/Util');
 var PhotoItemControl = React.createClass({
     render(){
@@ -31,7 +31,6 @@ var PhotoItemControl = React.createClass({
             );
         }
         let showImageUrl;
-        let imageView;
         if (Util.Vailidate.checkUrlHead(this.props.imageInfo.url)) {
             showImageUrl = this.props.imageInfo.url;
         }
@@ -76,7 +75,6 @@ var SelectPhotoControl = React.createClass({
             selectList.push(<PhotoItemControl key={v.url+i} {...photoInfo} />);
         });
         let selectPhotoButton = null;
-
         if (!this.props.isReader)    //非只读状态
         {
             if (this.props.maxCount > this.props.selectPhoto.length) {

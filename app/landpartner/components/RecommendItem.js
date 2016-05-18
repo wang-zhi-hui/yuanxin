@@ -1,9 +1,9 @@
 import React, {
-  Component,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
+    Component,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    View,
 } from 'react-native'
 import RecommendDesc from './RecommendDesc'
 
@@ -22,15 +22,18 @@ export default class RecommendItem extends Component {
       <TouchableHighlight onPress={this._nextFun.bind(this)}>
         <View style={styles.container}>
           <View style={styles.reStatus}>
-            <Text>{this.props.CreateTime}</Text>
-            <Text style={styles.evaluate}>{this.props.StatusImageInfoName}</Text>
+            <Text style={styles.CreateTimeText}>{this.props.CreateTime}</Text>
+            <View style={styles.evaluateText}>
+              <Text style={styles.evaluate}>{this.props.StatusImageInfoName}</Text>
+            </View>
           </View>
           <View style={styles.reAddress}>
-            <Text>所在地区：{this.props.Address}</Text>
+            <Text>所在地区：</Text>
+            <Text style={styles.reLandLeftText}>{this.props.Address}</Text>
           </View>
           <View style={styles.reLand}>
-            <Text>建设用地面积：{this.props.BuildLandAreas}</Text>
-            <Text>土地来源：{this.props.LandSourcesName}</Text>
+            <Text style={styles.reLandLeft}>建设用地面积：<Text style={styles.reLandLeftText}>{this.props.BuildLandAreas}</Text></Text>
+            <Text style={styles.reLandRight}>土地来源：<Text style={styles.reLandLeftText}>{this.props.LandSourcesName}</Text></Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -41,29 +44,62 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'column',
-    flex: 1
+    flex:1,
+  },
+  CreateTimeText:{
+
   },
   reStatus: {
+    marginLeft:10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ebebeb',
-    padding: 5
+    marginTop:12,
   },
   reAddress: {
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 5
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginLeft:10,
+    marginTop:4,
   },
   reLand: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 5
+    justifyContent: 'flex-start',
+    marginBottom:11,
+  },
+  reLandLeft:{
+    marginLeft:10,
+    marginTop:2,
+
+  },
+  reLandLeftText:{
+    fontSize:15,
+    color:'#a7a7a7'
+  },
+  reLandRight:{
+    marginTop:3,
+    marginLeft:20,
+  },
+  reLandRightText:{
+    fontSize:15,
+    color:'#a7a7a7'
   },
   noSub: {
-    color: '#666'
+    color:'#a7a7a7'
+  },
+  evaluateText:{
+    position:'absolute',
+    top:-2.5,
+    right:10,
+    borderWidth:1,
+    borderColor:'#ff5001',
+    borderRadius:5,
+    paddingLeft:6,
+    paddingRight:6,
+    paddingTop:3,
+    paddingBottom:3,
   },
   evaluate: {
-    color: '#FF0000'
+    color: '#ff5001',
+    alignItems:'center'
   }
 })

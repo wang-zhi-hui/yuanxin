@@ -24,7 +24,7 @@ var SelectDataRow = React.createClass({
                               style={StyleUtil.FormFontLeftStyle}>{this.props.itemData.Name}</Text>
                     </View>
                 </TouchableHighlight>
-                <View style={styles.breakLineItem}/>
+                <View style={StyleUtil.breakLineItem}/>
             </View>
         );
     }
@@ -102,12 +102,6 @@ var styles = StyleSheet.create({
         marginTop: 1,
         height: 44,
         justifyContent: 'center'
-    },
-    breakLineItem: {
-        marginLeft: 10,
-        marginRight: 10,
-        backgroundColor: '#efeff4',
-        height: 1
     }
 });
 module.exports = SelectDataInfo;
