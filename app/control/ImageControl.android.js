@@ -2,14 +2,12 @@
  * Created by lemon on 16/4/1.
  */
 'use strict';
-var React = require('react-native');
-
-var {
+import React,{
     StyleSheet,
     View,
     Image,
     ProgressBarAndroid
-    } = React;
+} from 'react-native';
 var ImageControl = React.createClass({
     getInitialState(){
         return {
@@ -31,7 +29,6 @@ var ImageControl = React.createClass({
     },
     render(){
         let loadingView = this.state.loading ? <ProgressBarAndroid styleAttr='Inverse'/> : null;
-        let imageStyle = null;
         let imageProp = null;
         if (this.props.imageUri)
             imageProp = {uri: this.props.imageUri};

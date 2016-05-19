@@ -23,9 +23,9 @@ var UserLogin = require('./app/view/login/UserLogin');
 var SelectPhotoUtil = require('./app/utils/SelectPhotoUtil');
 var OSSUtil = require('./app/utils/OSSUtil');
 var YuanXinNativeModule = require('./app/utils/YuanXinNativeModule');
-var navigator, refreshUserCallback;
+var navigator;
 var currUserInfo = {};
-var tempPostProp, tempGetProp, tempSelectPhotoCallback, tempOSSUploadCallBack;
+var tempSelectPhotoCallback, tempOSSUploadCallBack;
 var Index = React.createClass({
     getInitialState(){
         return {
@@ -36,58 +36,31 @@ var Index = React.createClass({
             isShowMaskView: false
         };
     },
-    sendSuccess(response){
-        if (!tempPostProp.special) {
-            if (response.code == 200) {
-                tempPostProp.success(response);
-            }
-            else if (response.code == 401) {
-                this.getRefreshUserInfo(this.send);
-            }
-            else {
-                this.maskViewHandler(false);
-                Util.AlertMessage(response.code.toString());
-            }
-        }
-        else
-            tempPostProp.success(response);
-    },
-    sendGetSuccess(response){
-        if (response.code == 200) {
-            if (tempGetProp.success)
-                tempGetProp.success(response);
-        }
-        else if (response.code == 401) {
-            this.getRefreshUserInfo(this.sendGet);
-        }
-        else {
-            this.maskViewHandler(false);
-            Util.AlertMessage(response.code.toString());
-        }
-    },
     sendError(error){
         this.maskViewHandler(false);
         console.log(error);
     },
-    sendGetJSon(getProps){
-        tempGetProp = getProps;
-        this.sendGet();
-    },
-    sendGet(){
-        tempGetProp.userToken = this.getCurrUserInfo().access_token;
-        tempGetProp.errorFun = (error)=>this.sendError(error);
-        tempGetProp.successFun = (responseText)=>this.sendGetSuccess(responseText);
-        Util.HttpHelper.SendGetJSon(tempGetProp);
-    },
     sendPostJSON(postProps){
-        tempPostProp = postProps;
-        this.send();
-    },
-    send(){
-        tempPostProp.userToken = this.getCurrUserInfo().access_token;
-        tempPostProp.errorFun = (error)=>this.sendError(error);
-        tempPostProp.successFun = (responseText)=>this.sendSuccess(responseText);
-        Util.HttpHelper.SendJSon(tempPostProp);
+        postProps.userToken = this.getCurrUserInfo().access_token;
+        postProps.errorFun = (error)=>this.sendError(error);
+        Util.HttpHelper.SendJSon(postProps).then((responseObj)=>{
+            if (!postProps.special) {
+                if (responseObj.code == 200) {
+                    postProps.success(responseObj);
+                }
+                else if (responseObj.code == 401) {
+                    this.getRefreshUserInfo(()=>{
+                        this.sendPostJSON(postProps);
+                    });
+                }
+                else {
+                    this.maskViewHandler(false);
+                    Util.AlertMessage(responseObj.code.toString());
+                }
+            }
+            else
+                postProps.success(responseObj);
+        });
     },
     componentWillUnmount() {
         if (Platform.OS == 'android') {
@@ -198,7 +171,7 @@ var Index = React.createClass({
             navigator.replace({
                 name: name || null,
                 component: component,
-                callBACK: callBack || null,
+                callBack: callBack || null,
                 params: params || null
             });
         }
@@ -209,16 +182,34 @@ var Index = React.createClass({
     setLoginUserInfo(userInfoStr){
         currUserInfo = JSON.parse(userInfoStr);
     },
-    getRefreshUserInfoSuccess(result){
-        if (result.code == 200) {
-            if (result.message.toString().indexOf('error') == -1 && result.message.toString().indexOf('token') != -1) {
-                var refreshUser = JSON.parse(result.message);
-                StorageUtil.setStorageItem(StorageUtil.OAuthToken, result.message);
-                currUserInfo = refreshUser;
-                if (refreshUserCallback) {
-                    refreshUserCallback();
-                    refreshUserCallback = null;
+    errorFun(error){
+        console.log(error);
+    },
+    getRefreshUserInfo(callback){
+        var refreshUserInfoProps = {
+            url: ConfigUtil.netWorkApi.login,
+            userToken: this.getCurrUserInfo().access_token,
+            body: 'grant_type=refresh_token&refresh_token=' + this.getCurrUserInfo().refresh_token + '&client_id=' + ConfigUtil.basic.appID,
+            errorFun: (error)=>this.errorFun(error)
+        };
+        Util.HttpHelper.SendJSon(refreshUserInfoProps).then((result)=>{
+            if (result.code == 200) {
+                if (result.message.toString().indexOf('error') == -1 && result.message.toString().indexOf('token') != -1) {
+                    var refreshUser = JSON.parse(result.message);
+                    StorageUtil.setStorageItem(StorageUtil.OAuthToken, result.message);
+                    currUserInfo = refreshUser;
+                    if (callback) {
+                        callback();
+                    }
                 }
+                else {
+                    this.maskViewHandler(false);
+                    StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
+                    StorageUtil.removeStorageItem(StorageUtil.CopmanyInfo);
+                    Util.AlertMessage(ConfigUtil.InnerText.loginTimeOutError);
+                    this.jumpReplacePage(UserLogin, 'userlogin');
+                }
+
             }
             else {
                 this.maskViewHandler(false);
@@ -227,29 +218,7 @@ var Index = React.createClass({
                 Util.AlertMessage(ConfigUtil.InnerText.loginTimeOutError);
                 this.jumpReplacePage(UserLogin, 'userlogin');
             }
-
-        }
-        else {
-            this.maskViewHandler(false);
-            StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
-            StorageUtil.removeStorageItem(StorageUtil.CopmanyInfo);
-            Util.AlertMessage(ConfigUtil.InnerText.loginTimeOutError);
-            this.jumpReplacePage(UserLogin, 'userlogin');
-        }
-    },
-    errorFun(error){
-        console.log(error);
-    },
-    getRefreshUserInfo(callback){
-        refreshUserCallback = callback;
-        var refreshUserInfoProps = {
-            url: ConfigUtil.netWorkApi.login,
-            userToken: currUserInfo.access_token,
-            body: 'grant_type=refresh_token&refresh_token=' + currUserInfo.refresh_token + '&client_id=' + ConfigUtil.basic.appID,
-            successFun: (responseText)=>this.getRefreshUserInfoSuccess(responseText),
-            errorFun: (error)=>this.errorFun(error)
-        };
-        Util.HttpHelper.SendJSon(refreshUserInfoProps);
+        });
     },
     jumpLogin(){
         StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
@@ -268,7 +237,6 @@ var Index = React.createClass({
             jumpPushPage: this.jumpPushPage,
             jumpPop: this.jumpPop,
             sendPostJSON: this.sendPostJSON,
-            sendGetJSon: this.sendGetJSon,
             selectPhotoHandler: this.selectPhotoHandler,
             uploadFileHandler: this.uploadFileHandler,
             jumpLogin: this.jumpLogin

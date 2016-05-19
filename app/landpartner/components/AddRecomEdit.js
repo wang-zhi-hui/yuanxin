@@ -163,13 +163,13 @@ export default class AddRecomEdit extends Component{
     typeinData.LandInfo.MunicipalSupportCode = this.state.MunicipalSupportCode
     typeinData.LandInfo.DemolitionSituationCode = this.state.DemolitionSituationCode
     typeinData.LandInfo.TransferFormCode = this.state.TransferFormCode
-    if (typeinData.LandInfo.LandNatureCode == '') {
-      return Util.AlertMessage('请填写用地性质')
+    if (!typeinData.LandInfo.LandNatureCode) {
+      return Util.AlertMessage('请选择用地性质')
     }
-    if (typeinData.LandInfo.BuildLandAreas == '') {
+    if (!typeinData.LandInfo.BuildLandAreas) {
       return Util.AlertMessage('请填写建筑用地面积')
     }
-    if (typeinData.LandInfo.PlanBuildAreas == '') {
+    if (!typeinData.LandInfo.PlanBuildAreas) {
       return Util.AlertMessage('请填写用规划建筑面积')
     }
     this.props.maskViewHandler(true)
@@ -187,6 +187,9 @@ export default class AddRecomEdit extends Component{
         }
       }
     })
+    typeinData = {
+      LandInfo: {}
+    }
   }
   async showPicker(stateKey, options) {
     try {

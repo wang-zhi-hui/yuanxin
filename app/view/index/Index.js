@@ -31,6 +31,11 @@ var Index = React.createClass({
                     text: ConfigUtil.InnerText.releaseSource,
                     icon: require('../../images/release_source.png'),
                     click: ()=>this.props.jumpPushPage(WebModule, 'webmodule', null, {url: ConfigUtil.htmlUrl.releaseSource})
+                },
+                {
+                    text: ConfigUtil.InnerText.releaseSource,
+                    icon: require('../../images/release_source.png'),
+                    click: ()=>this.props.jumpPushPage(TestWebView, 'webmodule', null, {url: ConfigUtil.htmlUrl.releaseSource})
                 }
             ],
             lineCount: 4

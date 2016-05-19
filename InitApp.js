@@ -38,47 +38,11 @@ var InitApp = React.createClass({
             selectedImageIndex: 0
         };
     },
-    getAreaSuccess(responseText){
-        if (responseText.code == 200) {
-            StorageUtil.setStorageItem(StorageUtil.AreaList, responseText.message.toString());
-            isLoadArea = true;
-            if (isLoadArea && isLoadData && !this.state.isLoadSuccess) {
-                this.state.isLoadSuccess = true;
-                this.setState(this.state);
-            }
-        }
-        else {
-            if (!this.state.isLoadError) {
-                this.state.isLoadError = true;
-                this.setState(this.state);
-            }
-        }
-    },
     getHtttpError(error){
         if (!this.state.isLoadError) {
             this.state.isLoadError = true;
             this.setState(this.state);
         }
-    },
-    getBasicsData(responseText){
-        if (responseText.code == 200) {
-            var basicsData = JSON.parse(responseText.message);
-            StorageUtil.setStorageItem(StorageUtil.BusinesType, JSON.stringify(basicsData.Business));
-            StorageUtil.setStorageItem(StorageUtil.FunctionalModules, JSON.stringify(basicsData.FunctionalModules));
-            StorageUtil.setStorageItem(StorageUtil.BasicsDataUpdateTime, basicsData.VersionDate)
-            isLoadData = true;
-            if (isLoadArea && isLoadData && !this.state.isLoadSuccess) {
-                this.state.isLoadSuccess = true;
-                this.setState(this.state);
-            }
-        }
-        else {
-            if (!this.state.isLoadError) {
-                this.state.isLoadError = true;
-                this.setState(this.state);
-            }
-        }
-
     },
     timerHandler(){
         if (!this.state.isLoadError) {
@@ -101,10 +65,24 @@ var InitApp = React.createClass({
                 if (!result && !error) {
                     var postProps = {
                         url: ConfigUtil.netWorkApi.getArea,
-                        successFun: (responseText)=>this.getAreaSuccess(responseText),
                         errorFun: (error)=>this.getHtttpError(error)
                     }
-                    Util.HttpHelper.SendGetJSon(postProps);
+                    Util.HttpHelper.SendGetJSon(postProps).then((responseText)=>{
+                        if (responseText.code == 200) {
+                            StorageUtil.setStorageItem(StorageUtil.AreaList, responseText.message.toString());
+                            isLoadArea = true;
+                            if (isLoadArea && isLoadData && !this.state.isLoadSuccess) {
+                                this.state.isLoadSuccess = true;
+                                this.setState(this.state);
+                            }
+                        }
+                        else {
+                            if (!this.state.isLoadError) {
+                                this.state.isLoadError = true;
+                                this.setState(this.state);
+                            }
+                        }
+                    });
                 }
                 else {
                     isLoadArea = true;
@@ -118,10 +96,27 @@ var InitApp = React.createClass({
         if (!isLoadData) {
             var postProps = {
                 url: ConfigUtil.netWorkApi.getBasicsData + '?dt=',
-                successFun: (responseText)=>this.getBasicsData(responseText),
                 errorFun: (error)=>this.getHtttpError(error)
             };
-            Util.HttpHelper.SendGetJSon(postProps);
+            Util.HttpHelper.SendGetJSon(postProps).then((responseText)=>{
+                if (responseText.code == 200) {
+                    var basicsData = JSON.parse(responseText.message);
+                    StorageUtil.setStorageItem(StorageUtil.BusinesType, JSON.stringify(basicsData.Business));
+                    StorageUtil.setStorageItem(StorageUtil.FunctionalModules, JSON.stringify(basicsData.FunctionalModules));
+                    StorageUtil.setStorageItem(StorageUtil.BasicsDataUpdateTime, basicsData.VersionDate)
+                    isLoadData = true;
+                    if (isLoadArea && isLoadData && !this.state.isLoadSuccess) {
+                        this.state.isLoadSuccess = true;
+                        this.setState(this.state);
+                    }
+                }
+                else {
+                    if (!this.state.isLoadError) {
+                        this.state.isLoadError = true;
+                        this.setState(this.state);
+                    }
+                }
+            });
         }
     },
     getCopmanyInfoSuccess(result){
@@ -176,11 +171,11 @@ var InitApp = React.createClass({
             else {
                 loadingView = (
                     <TouchableHighlight underlayColor={'transparent'} onPress={()=>this.refreshData()}>
-                        <Image style={styles.initAppImage} source={require('./app/images/initapp.png')}>
-                            <View>
+                        <View>
+                            <Image style={styles.initAppImage} source={require('./app/images/initapp.png')}>
                                 <Text allowFontScaling={false}>{'加载错误,点击重新加载!'}</Text>
-                            </View>
-                        </Image>
+                            </Image>
+                        </View>
                     </TouchableHighlight>
                 );
             }
@@ -197,7 +192,7 @@ var InitApp = React.createClass({
             }
             else {
                 loadingView = (
-                    <TouchableHighlight underlayColor={'transparent'} onPress={()=>this.refreshData()}>
+                    <TouchableHighlight style={styles.initAppImage} underlayColor={'transparent'} onPress={()=>this.refreshData()}>
                         <View style={styles.initLoadingView}>
                             <Image style={styles.initLoading}
                                    source={this.state.loadingImages[this.state.selectedImageIndex]}/>
@@ -217,7 +212,7 @@ var InitApp = React.createClass({
 });
 var styles = StyleSheet.create({
     loading: {
-        marginTop: 20,
+        marginTop: Platform.OS == 'android' ? 0 : 20,
         flexDirection: 'row',
         flex: 1,
         alignItems: 'center',

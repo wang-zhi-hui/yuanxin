@@ -55,12 +55,13 @@ export default class RecommendDesc extends Component {
     }
     if (paramsRecommendDesc.StatusImageInfoCode == -2) {
       this.state.btn = <View style={styles.btnGroup}>
-                        <ButtonControl
-                            userClick={this._submit.bind(this)}
-                            buttonStyle={styles.btnContainer}
-                            buttonTextStyle={styles.btnText}
-                            buttonText="提交"/>
-                        </View>
+                              <ButtonControl
+                                  userClick={this._submit.bind(this)}
+                                  buttonStyle={styles.btnContainer}
+                                  buttonTextStyle={styles.btnText}
+                                  buttonText="提交"/>
+                       </View>
+
       actionBarProp.actionBarRightProp = {
           text: '编辑',
           click: () => this.editFun()
@@ -160,14 +161,18 @@ export default class RecommendDesc extends Component {
                    <Text style={styles.textRightItem}>{paramsRecommendDesc.DemolitionSituationName}</Text>
                  </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>起始价：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}</Text>
+                    <Text style={styles.textLeftItem}>起始价：</Text>
+                    <Text style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}</Text>
                 </View>
+
               </View>
             </View>
           </View>
-            <View style={styles.btnContainer}>
                 {this.state.btn}
+            <View style={styles.btnWhite}>
+                <Text style={styles.btnadText}>
+                    kdsfk
+                </Text>
             </View>
         </ScrollView>
       </View>
@@ -182,7 +187,6 @@ const styles = StyleSheet.create({
      backgroundColor: '#FFFFFF'
    },
    viewContainer: {
-
        backgroundColor:'#fff'
    },
    imgContainer: {
@@ -242,8 +246,7 @@ const styles = StyleSheet.create({
      height:18,
      justifyContent:'center',
      marginTop:10,
-     borderBottomWidth:1,
-     borderBottomColor:'#eaeaea',
+
    },
    textRightItem: {
      flex:7,
@@ -252,10 +255,24 @@ const styles = StyleSheet.create({
      fontSize: 15,
      justifyContent:'center',
      marginTop:10,
-     borderBottomWidth:1,
-     borderBottomColor:'#eaeaea',
 
    },
+    btnWhite:{
+        height:22,
+        flexDirection:'row',
+        backgroundColor:'#fff'
+    },
+    btnadText:{
+        height:22,
+        color:'#fff',
+        fontSize:15,
+    },
+    bottomView:{
+        width: Dimensions.get('window').width,
+        flexDirection: 'row',
+        justifyContent:'center',
+        height:40,
+    },
    topState: {
      justifyContent: 'center',
      alignItems: 'center'
@@ -265,20 +282,16 @@ const styles = StyleSheet.create({
    },
   bottomContain: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ebebeb'
   },
   nexBtn: {
     marginTop: 30,
     marginLeft: 10,
     marginRight: 10
   },
-
     btnContainer: {
         height:40,
         margin:10,
-        marginTop:30,
-        marginBottom:30,
+        marginTop:25,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,

@@ -22,7 +22,7 @@ var SelectCompanyType = React.createClass({
         let actionBarProp = {
             actionName: ConfigUtil.InnerText.selectCompanyType,
             actionBarLeftProp: {
-                image:(<Image style={{height:15,width:9,marginLeft:10}} source={require('../../images/left_back.png')} />),
+                image:(<Image style={StyleUtil.ActionBarLeftBackImage} source={require('../../images/left_back.png')} />),
                 click: function () {
                     StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
                     StorageUtil.removeStorageItem(StorageUtil.CopmanyInfo);

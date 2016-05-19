@@ -30,16 +30,16 @@ var ProgramInfo = React.createClass({
     }
   },
   _nextFun() {
-    if (typeinData.ProjectInfo.CompanyName == '') {
+    if (!typeinData.ProjectInfo.CompanyName) {
       return Util.AlertMessage('请填写公司名称')
     }
-    if (typeinData.ProjectInfo.Contacts == '') {
+    if (!typeinData.ProjectInfo.Contacts) {
       return Util.AlertMessage('请填写联系人')
     }
-    if (typeinData.ProjectInfo.ContactPhone == '') {
+    if (!typeinData.ProjectInfo.ContactPhone) {
       return Util.AlertMessage('请填写联系电话')
     }
-    if (typeinData.ProjectInfo.ConstructionSituation == '') {
+    if (!typeinData.ProjectInfo.ConstructionSituation) {
       return Util.AlertMessage('请填写建设情况')
     }
     typeinData.OperationType = 1

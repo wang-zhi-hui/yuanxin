@@ -10,7 +10,6 @@ var {
     StyleSheet,
     Text,
     View,
-    TextInput,
     TouchableHighlight,
     Image,
     Platform
@@ -135,8 +134,7 @@ var styles = StyleSheet.create({
     },
     deletePhoto: {
         height: 16,
-        width: 16,
-
+        width: 16
     }
 });
 module.exports = SelectPhotoControl;

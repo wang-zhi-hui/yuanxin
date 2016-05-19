@@ -9,8 +9,6 @@ var {
     View,
     TextInput,
     ScrollView,
-    TouchableHighlight,
-    Platform,
     Dimensions,
     InteractionManager,
     Image
@@ -22,7 +20,6 @@ var Util = require('../../utils/Util');
 var ButtonControl = require('../../control/ButtonControl');
 var ActionBar = require('../../control/ActionBar');
 var FormRowInput = require('../../control/FormRowInput');
-var SelectPhotoControl = require('../../control/SelectPhotoControl');
 var StorageUtil = require('../../utils/StorageUtil');
 var MerchantMain = require('./MerchantMain');
 var EditMerchant = require('./EditMerchant');

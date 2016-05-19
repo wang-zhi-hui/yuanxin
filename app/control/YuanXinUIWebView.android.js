@@ -29,7 +29,7 @@ var WebViewState = keyMirror({
 /**
  * Renders a native WebView.
  */
-var YuanXinWebViewAndroid = React.createClass({
+var YuanXinUIWebView = React.createClass({
 
     propTypes: {
         ...View.propTypes,
@@ -280,7 +280,7 @@ var YuanXinWebViewAndroid = React.createClass({
     },
 });
 
-var RCTWebView = requireNativeComponent('YuanXinWebView', YuanXinWebViewAndroid);
+var RCTWebView = requireNativeComponent('YuanXinWebView', YuanXinUIWebView);
 
 var styles = StyleSheet.create({
     container: {
@@ -292,4 +292,4 @@ var styles = StyleSheet.create({
     },
 });
 
-module.exports = YuanXinWebViewAndroid;
+module.exports = YuanXinUIWebView;

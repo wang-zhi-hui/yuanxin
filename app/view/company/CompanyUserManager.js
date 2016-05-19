@@ -24,23 +24,22 @@ var CompanyUserManager = React.createClass({
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             dataList: [],
             isRefreshing: false,
-            selectText: ''
+            selectText: '',
+            isFirst: true
         };
     },
     _deleteSuccess(result){
-        let deleteMessage=JSON.parse(result.message);
-        if(deleteMessage.isSuccess)
-        {
+        let deleteMessage = JSON.parse(result.message);
+        if (deleteMessage.isSuccess) {
             Util.AlertMessage(ConfigUtil.InnerText.deleteSuccess);
             this._searchCopmanyUserList();
         }
         else {
             Util.AlertMessage(deleteMessage.errorMessage.m_StringValue);
         }
-        console.log(result);
     },
     _delete(e){
-        if(e.isManager)
+        if (e.isManager)
             Util.AlertMessage(ConfigUtil.InnerText.deleteCompanyUserAdminError);
         else
             this.props.sendPostJSON({
@@ -59,17 +58,19 @@ var CompanyUserManager = React.createClass({
         this.setState(this.state);
     },
     _searchHandler(){
-        this.componentDidMount();
+        this._searchCopmanyUserList();
     },
     _searchSuccess(result){
         this.state.dataList = JSON.parse(result.message);
-        if(this.state.dataList.length==0)
+        if (this.state.dataList.length == 0)
             this.state.dataList.push({});
         this.state.isRefreshing = false;
         this.setState(this.state);
+        this.props.maskViewHandler(false);
     },
     componentDidMount(){
         InteractionManager.runAfterInteractions(() => {
+            this.props.maskViewHandler(true);
             this._searchCopmanyUserList();
         });
     },
@@ -83,7 +84,7 @@ var CompanyUserManager = React.createClass({
         });
     },
     _renderRow(rowData, sectionID, rowID, highlightRow){
-        if(rowData.loginName){
+        if (rowData.loginName) {
             let deleteButton = [
                 {
                     text: ConfigUtil.InnerText.buttonDelete,
@@ -136,7 +137,7 @@ var CompanyUserManager = React.createClass({
     _onRefresh(){
         this.state.isRefreshing = true;
         this.setState(this.state);
-        this.componentDidMount();
+        this._searchCopmanyUserList();
     },
     render(){
         let actionBarProp = {

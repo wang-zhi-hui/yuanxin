@@ -10,6 +10,7 @@
     "react-native-amap-location": "0.0.2",
     "react-native-code-push": "^1.10.0-beta",
     "react-native-keyboard-aware-scrollview": "0.0.7",
-    "react-native-swipeout": "^2.0.12"
+    "react-native-swipeout": "^2.0.12",
+    "react-native-webview-bridge": "^0.20.3"
   }
 }

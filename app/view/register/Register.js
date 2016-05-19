@@ -102,7 +102,8 @@ var Register = React.createClass({
             body: JSON.stringify({
                 SessionID: this.state.sessionID,
                 Mobile: this.state.phoneNumber,
-                MarkCode: this.state.verifyCode
+                MarkCode: this.state.verifyCode,
+                clientId: ConfigUtil.basic.appID
             }),
             success: (responseText)=>this.registerSuccess(responseText)
         });

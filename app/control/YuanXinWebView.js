@@ -16,8 +16,8 @@ var YuanXinWebView=React.createClass({
         let webViewControl=null;
         if (Platform.OS == 'android')
         {
-            var YuanXinWebViewAndroid = require('./YuanXinWebViewAndroid');
-            webViewControl=<YuanXinWebViewAndroid {...this.props} />;
+            var YuanXinUIWebView = require('./YuanXinUIWebView');
+            webViewControl=<YuanXinUIWebView {...this.props} />;
         }
         else {
             var YuanXinWebViewIOS=require('react-native-webview-bridge');

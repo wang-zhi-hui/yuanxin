@@ -47,14 +47,17 @@ export default class TransLand extends Component{
     typeinData.LandInfo.AddressDetail = paramsTransLand.AddressDetail
 
 
-    if (typeinData.LandInfo.LandNatureCode == '') {
+    if (!typeinData.LandInfo.LandNatureCode) {
       return Util.AlertMessage('请选择用地性质')
     }
-    if (typeinData.LandInfo.BuildLandAreas == '') {
+    if (!typeinData.LandInfo.BuildLandAreas) {
       return Util.AlertMessage('请填写建筑用地面积')
     }
-    if (typeinData.LandInfo.PlanBuildAreas == '') {
+    if (!typeinData.LandInfo.PlanBuildAreas) {
       return Util.AlertMessage('请填写用规划建筑面积')
+    }
+    typeinData = {
+      LandInfo: {}
     }
     this.props.jumpPushPage(ProgramInfo, 'programInfo', paramsProgramInfo={...typeinData})
   }

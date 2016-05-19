@@ -37,7 +37,9 @@ var ActionBar = React.createClass({
                     <View style={StyleUtil.ActionBarLeftTouch}>
                         {this.props.actionBarLeftProp.image}
                         <Text allowFontScaling={false}
-                              style={StyleUtil.ActionBarLeftText}>{this.props.actionBarLeftProp.text || null}</Text>
+                              style={StyleUtil.ActionBarLeftText}>
+                            {this.props.actionBarLeftProp.text || null}
+                        </Text>
                     </View>
                 );
             }
@@ -57,7 +59,10 @@ var ActionBar = React.createClass({
                     <View style={StyleUtil.ActionBarRightTouch}>
                         <Text
                             allowFontScaling={false}
-                            style={StyleUtil.ActionBarRightText}>{this.props.actionBarRightProp.text}</Text></View>
+                            style={StyleUtil.ActionBarRightText}>
+                            {this.props.actionBarRightProp.text}
+                        </Text>
+                    </View>
                 );
             }
         }

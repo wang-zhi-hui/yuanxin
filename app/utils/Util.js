@@ -2,19 +2,11 @@
  * Created by lemon on 16/3/1.
  */
 'use strict';
-var React = require('react-native');
-
-var {
-    AppRegistry,
-    Component,
-    StyleSheet,
-    Text,
-    View,
-    Image,
+import React,{
     ToastAndroid,
     Platform
-    } = React;
-var ToastIOSUtil = require('./ToastIOSUtil');
+} from 'react-native';
+import ToastIOSUtil from './ToastIOSUtil';
 var Util = {
     GUID: function () {
         var guid = "";
@@ -34,28 +26,32 @@ var Util = {
                 },
                 body: postProps.body
             }).then((response) => {
-                var returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
+                let returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
                 postProps.successFun({message: returnMessage, code: response.status});
             }).catch(postProps.errorFun);
         },
         SendJSon: function (postProps) {
-            fetch(postProps.url, {
+            return fetch(postProps.url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8',
                     'Accept': 'application/json',
-                    'Authorization': postProps.userToken?'Bearer ' + postProps.userToken:''
+                    'Authorization': postProps.userToken ? 'Bearer ' + postProps.userToken : ''
                 },
                 body: postProps.body
             }).then((response) => {
-                var returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
-                postProps.successFun({message: returnMessage, code: response.status});
+                let returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
+                return new Promise((resolve, reject)=>{
+                    resolve({message: returnMessage, code: response.status});
+                });
             }).catch(postProps.errorFun);
         },
         SendGetJSon: function (postProps) {
-            fetch(postProps.url).then((response) => {
-                var returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
-                postProps.successFun({message: returnMessage, code: response.status});
+            return fetch(postProps.url).then((response) => {
+                let returnMessage = response._bodyText == null || response._bodyText == 'null' ? null : response._bodyText;
+                return new Promise((resolve, reject)=>{
+                    resolve({message: returnMessage, code: response.status});
+                });
             }).catch(postProps.errorFun);
         }
     },

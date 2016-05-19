@@ -2,13 +2,11 @@
  * Created by lemon on 16/5/17.
  */
 'use strict';
-var React = require('react-native');
-
-var {
+import React,{
     StyleSheet,
     Image,
     ActivityIndicatorIOS
-    } = React;
+} from 'react-native';
 var ImageControl = React.createClass({
     getInitialState(){
         return {

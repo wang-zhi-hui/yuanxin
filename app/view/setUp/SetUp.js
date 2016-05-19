@@ -39,12 +39,6 @@ var SetUp = React.createClass({
             ]
         };
     },
-    loginOutSuccess(result){
-        StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
-        StorageUtil.removeStorageItem(StorageUtil.CopmanyInfo);
-        this.props.jumpPushPage(null, 'userlogin');
-        Util.AlertMessage(ConfigUtil.InnerText.loginOutSuccess);
-    },
     loginOutError(error){
         console.log(error);
     },
@@ -52,10 +46,14 @@ var SetUp = React.createClass({
         let postProps = {
             url: ConfigUtil.netWorkApi.loginOut,
             userToken: this.props.getCurrUserInfo().access_token,
-            successFun: (responseText)=>this.loginOutSuccess(responseText),
             errorFun: (error)=>this.loginOutError(error)
         };
-        Util.HttpHelper.SendGetJSon(postProps);
+        Util.HttpHelper.SendGetJSon(postProps).then((result)=>{
+            StorageUtil.removeStorageItem(StorageUtil.OAuthToken);
+            StorageUtil.removeStorageItem(StorageUtil.CopmanyInfo);
+            this.props.jumpPushPage(null, 'userlogin');
+            Util.AlertMessage(ConfigUtil.InnerText.loginOutSuccess);
+        });
     },
     render(){
         let actionBar = {

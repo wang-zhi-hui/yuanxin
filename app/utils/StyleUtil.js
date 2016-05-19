@@ -10,26 +10,26 @@ var StyleUtil = {
         backgroundColor:'#efeff4',
         flex:1
     },
-    menubarBottom:{ //底部导航
+    menuBarBottom:{ //底部导航
         position: 'absolute',
         backgroundColor:'#fff',
         left: 0 ,
         right: 0,
         bottom: 0
     },
-    touchitem:{
+    touchItem:{
         backgroundColor:'#ffffff',
         flex: 1,
         height: 56
     },
-    menubar:{
+    menuBar:{
         height: 56,
         flexDirection:'row'
     },
-    menuitemrow:{
+    menuItemRow:{
         flexDirection:'row'
     },
-    menubaritem:{
+    menuBarItem:{
         flex: 1,
         height: 56,
         flexDirection: 'column',
@@ -60,6 +60,11 @@ var StyleUtil = {
         height: 44,
         flexDirection: 'row',
         backgroundColor: '#333333'
+    },
+    ActionBarLeftBackImage:{
+        height:15,
+        width:9,
+        marginLeft:10
     },
     ActionBarLeft: { //左侧菜单
         flex: 2,

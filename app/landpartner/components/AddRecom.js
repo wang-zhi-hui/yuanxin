@@ -137,13 +137,13 @@ export default class AddRecom extends Component{
     typeinData.LandInfo.City = paramsAddRecom.City
     typeinData.LandInfo.County = paramsAddRecom.County
     typeinData.LandInfo.AddressDetail = paramsAddRecom.AddressDetail
-    if (typeinData.LandInfo.LandNatureCode == '') {
+    if (!typeinData.LandInfo.LandNatureCode) {
       return Util.AlertMessage('请选择用地性质')
     }
-    if (typeinData.LandInfo.BuildLandAreas == '') {
+    if (!typeinData.LandInfo.BuildLandAreas) {
       return Util.AlertMessage('请填写建筑用地面积')
     }
-    if (typeinData.LandInfo.PlanBuildAreas == '') {
+    if (!typeinData.LandInfo.PlanBuildAreas) {
       return Util.AlertMessage('请填写用规划建筑面积')
     }
     this.props.maskViewHandler(true)
@@ -161,6 +161,9 @@ export default class AddRecom extends Component{
         }
       }
     })
+    typeinData = {
+      LandInfo: {}
+    }
   }
   _save() {
     if (this.state.LaunchTime != '请选择日期') {
@@ -172,13 +175,13 @@ export default class AddRecom extends Component{
     typeinData.LandInfo.City = paramsAddRecom.City
     typeinData.LandInfo.County = paramsAddRecom.County
     typeinData.LandInfo.AddressDetail = paramsAddRecom.AddressDetail
-    if (typeinData.LandInfo.LandNatureCode == '') {
+    if (!typeinData.LandInfo.LandNatureCode) {
       return Util.AlertMessage('请选择用地性质')
     }
-    if (typeinData.LandInfo.BuildLandAreas == '') {
+    if (!typeinData.LandInfo.BuildLandAreas) {
       return Util.AlertMessage('请填写建筑用地面积')
     }
-    if (typeinData.LandInfo.PlanBuildAreas == '') {
+    if (!typeinData.LandInfo.PlanBuildAreas) {
       return Util.AlertMessage('请填写用规划建筑面积')
     }
     this.props.maskViewHandler(true)
@@ -196,6 +199,9 @@ export default class AddRecom extends Component{
         }
       }
     })
+    typeinData = {
+      LandInfo: {}
+    }
   }
   async showPicker(stateKey, options) {
     try {
