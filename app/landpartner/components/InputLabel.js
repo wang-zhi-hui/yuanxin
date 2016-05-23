@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 		color:'#f00',
 	},
 	labelTextView:{
-		flex:3,
+		flex:4,
 		justifyContent: 'center',
 	},
 	labelTextLeftView:{
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 		marginLeft:5,
 	},
 	labelTextRightView:{
-		flex: 7,
+		flex: 6,
 		justifyContent:'center',
 		alignSelf:'center'
 	},

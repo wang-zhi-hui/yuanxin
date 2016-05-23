@@ -88,7 +88,7 @@ var LandIndex = React.createClass({
 				this.setState(this.state)
 			} else {
 				this.props.sendPostJSON({
-					url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+					url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
 					success: (response) => {
 						let selections = []
 						let lists = JSON.parse(response.message).data.LandResource.data
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#ebebeb'
 	},
 	pickerLeftControl: {
-		flex:7,
+		flex:6,
 		height: 40,
 		alignSelf: 'stretch',
 		flexDirection: 'row',
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#ebebeb'
 	},
 	pickerTextContainer: {
-		flex:3,
+		flex:4,
 		justifyContent: 'center'
 	},
 	pickerText: {
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
 		marginLeft:5,
   },
 	selectMe: {
-		flex:7,
+		flex:6,
 		marginRight:10,
 	},
 	selectContainer: {
@@ -297,14 +297,14 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#ebebeb'
 	},
 	selectLeft: {
-		flex:3,
+		flex:4,
 		marginLeft: 15,
 		fontSize: 15,
 		color: '#3b3b3b'
 	},
 	selectRight: {
 		fontSize: 15,
-		flex:7,
+		flex:6,
 		color:"#a7a7a7"
 	},
 

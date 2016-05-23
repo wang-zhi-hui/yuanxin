@@ -132,7 +132,7 @@ export default class TransLand extends Component{
         this.setState(this.state)
       } else {
         this.props.sendPostJSON({
-          url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+          url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
           success: (response) => {
             let LandNature = []
             let LevelingCondition = []
@@ -292,7 +292,7 @@ export default class TransLand extends Component{
             </View>
               <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue} value={this.state.GreeninGate} />
               <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue} value={this.state.HighLimit} />
-
+              <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" tags="万元" getValue={this.getValue} value={paramsTransLand.EstimateTransactionPrice} />
             <View style={styles.pickerControlLeft}>
               <View style={styles.pickerTextContainerLeft}>
                 <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
@@ -314,7 +314,7 @@ export default class TransLand extends Component{
               </View>
             </View>
             <View>
-              <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" tags="万元" getValue={this.getValue} value={paramsTransLand.EstimateTransactionPrice} />
+
             </View>
             <View style={styles.datepickerContainer}>
               <Text allowFontScaling={false} style={styles.datePickerText}>预计转让时间</Text>
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
 
   selectMe: {
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   listItems: {
@@ -415,32 +415,32 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   pickerTextContainerLeft: {
-    flex:3,
+    flex:4,
     justifyContent: 'center'
   },
   pickerTextLeft: {
-    flex:7,
+    flex:6,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextRight: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
   },
   pickerLeftControl: {
-    flex:7,
+    flex:6,
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
   },
   pickerTextContainer: {
-    width: 100,
+    flex:4,
     justifyContent: 'center'
   },
   pickerText: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     marginLeft:5,
   },
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     fontSize:15,
   },
   datePickerRight: {
-    flex:7,
+    flex:6,
     height: 40,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb'
   },
   datePickerText: {
-    flex:3,
+    flex:4,
     justifyContent: 'center',
     fontSize: 15,
     color: '#3b3b3b',
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   selectDate:{
-    flex:7,
+    flex:6,
     marginRight:10,
 
   },
@@ -488,10 +488,10 @@ const styles = StyleSheet.create({
     color:'#a7a7a7',
   },
   datePicker: {
-    flex:3,
+    flex:4,
   },
     buttonText: {
-      flex:7,
+      flex:6,
       color:'#a7a7a7',
       fontSize: 15,
       marginTop:10,

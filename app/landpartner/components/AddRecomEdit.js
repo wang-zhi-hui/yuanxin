@@ -88,7 +88,7 @@ export default class AddRecomEdit extends Component{
         })
       } else {
         this.props.sendPostJSON({
-          url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+          url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
           success: (response) => {
             let partnerData = JSON.parse(response.message)
             let LandNature = []
@@ -190,7 +190,7 @@ export default class AddRecomEdit extends Component{
 
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
       body: JSON.stringify(typeinData),
       success: (response) => {
         this.props.maskViewHandler(false)
@@ -350,6 +350,7 @@ export default class AddRecomEdit extends Component{
             </View>
             <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue.bind(this)} value={this.state.GreeninGate.toString()} />
             <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue.bind(this)} value={this.state.HighLimit.toString()} />
+            <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.StartingPrice.toString()} />
             <View style={styles.pickerControlLeft}>
               <View style={styles.pickerTextContainerLeft}>
                 <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
@@ -370,7 +371,6 @@ export default class AddRecomEdit extends Component{
                 </View>
               </View>
             </View>
-            <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.StartingPrice.toString()} />
             <View style={styles.datepickerContainer}>
               <View style={styles.pickerTextContainer}>
                 <Text allowFontScaling={false} style={styles.pickerTextRight} >推出时间</Text>
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
     fontSize:15,
   },
   selectMe: {
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   selectMeRight:{
@@ -474,35 +474,34 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   pickerLeftControl: {
-    flex:7,
+    flex:6,
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius:10
   },
   pickerTextContainer: {
-    flex:3,
-
+    flex:4,
     justifyContent: 'center'
   },
   pickerTextContainerLeft: {
-    flex:3,
+    flex:4,
     justifyContent: 'center'
   },
   pickerText: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextLeft: {
-    flex:7,
+    flex:6,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextRight: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
     marginTop:10,
@@ -516,7 +515,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb'
   },
   datePicker: {
-    flex:7,
+    flex:6,
     height: 40,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
@@ -544,7 +543,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   selectDate:{
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   dateTextIOS:{
@@ -559,6 +558,7 @@ const styles = StyleSheet.create({
     height:40,
     margin:10,
     marginTop: 20,
+    marginBottom:20,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

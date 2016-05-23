@@ -23,7 +23,7 @@ var Recommend = React.createClass({
   componentWillMount() {
     this.props.maskViewHandler(true)
       this.props.sendPostJSON({
-        url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/LoadRecommendList',
+        url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/LoadRecommendList',
         body: JSON.stringify({pageIndex: 1, pageSize: 10}),
         success: (response) => {
           console.log(JSON.parse(response.message).data.LandInfo)
@@ -36,7 +36,7 @@ var Recommend = React.createClass({
   fetchData(){
     pageIndex+=1
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/LoadRecommendList',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/LoadRecommendList',
       body: JSON.stringify({pageIndex: pageIndex, pageSize: 10}),
       success: (response) => {
         for (let item of JSON.parse(response.message).data.LandInfo) {

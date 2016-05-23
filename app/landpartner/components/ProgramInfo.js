@@ -13,7 +13,7 @@ import ButtonControl from '../../control/ButtonControl'
 import ActionBar from '../../control/ActionBar'
 import LandIndex from '../LandIndex'
 import Recommend from '../Recommend'
-import StorageUtil from '../../utils/StorageUtil'
+import Home from '../../view/index/Home'
 import SelectPhotoControl from '../../control/SelectPhotoControl'
 import OSSUtil from '../../utils/OSSUtil'
 import Util from '../../utils/Util'
@@ -61,20 +61,23 @@ var ProgramInfo = React.createClass({
       })
     } else {
       this.props.sendPostJSON({
-        url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+        url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
         body: JSON.stringify(typeinData),
         success: (response) => {
+          console.log(response.message)
           this.props.maskViewHandler(false)
           if (JSON.parse(response.message).status == 'SUCCESS') {
-            Util.AlertMessage("提交成功")
-            this.props.jumpReplacePage(Recommend, 'recommend')
+            Util.AlertMessage("保存成功")
+            this.props.navigator.popToTop()
           } else {
-            Util.AlertMessage("提交失败")
-            this.props.jumpReplacePage(LandIndex, 'landIndex')
+            Util.AlertMessage("保存失败")
+            this.props.jumpReplacePage(Recommend, 'recommend')
           }
         }
       })
     }
+
+
   },
   getValue(value, label) {
     if (label == 'CompanyName') {
@@ -127,19 +130,29 @@ var ProgramInfo = React.createClass({
       this.setState(this.state)
       typeinData.ProjectImageInfoList.push({ImageUrl: this.state.photoArray[0].UpdateLoadUrl})
       this.props.sendPostJSON({
-        url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+        url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
         body: JSON.stringify(typeinData),
         success: (response) => {
           this.props.maskViewHandler(false)
-          if (JSON.parse(response.message).status == 'SUCCESS') {
-            Util.AlertMessage("提交成功")
-            this.props.jumpReplacePage(Recommend, 'recommend')
-          } else {
-            Util.AlertMessage("提交失败")
-            this.props.jumpReplacePage(Recommend, 'recommend')
-          }
+
         }
       })
+  },
+  submitMerchant(){
+    this.props.sendPostJSON({
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
+      body: JSON.stringify(typeinData),
+      success: (response) => {
+        this.props.maskViewHandler(false)
+        if (JSON.parse(response.message).status == 'SUCCESS') {
+          Util.AlertMessage("保存成功")
+          this.props.navigator.popToTop()
+        } else {
+          Util.AlertMessage("保存失败")
+          this.props.jumpReplacePage(Recommend, 'recommend')
+        }
+      }
+    })
   },
   uploadFileOneSuccess(e) {
     let newsFileList
@@ -149,20 +162,24 @@ var ProgramInfo = React.createClass({
     for (let i = 0; i < this.state.photoArray.length; i++) {
       typeinData.ProjectImageInfoList.push(OSSUtil.getItemFile(this.state.photoArray))
     }
-    this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
-      body: JSON.stringify(typeinData),
-      success: (response) => {
-        this.props.maskViewHandler(false)
-        if (JSON.parse(response.message).status == 'SUCCESS') {
-          Util.AlertMessage("提交成功")
-          this.props.jumpReplacePage(Recommend, 'recommend')
-        } else {
-          Util.AlertMessage("提交失败")
-          this.props.jumpReplacePage(Recommend, 'recommend')
-        }
+    this.checkAllFileSuccess()
+
+
+  },
+  checkFileSuccess(fileList){
+    let isAllSuccess = true;
+    for (let i = 0; i < fileList.length; i++) {
+      if (!fileList[i].UpdateLoadUrl) {
+        isAllSuccess = false;
       }
-    })
+    }
+    return isAllSuccess;
+  },
+  checkAllFileSuccess(){
+    let photoArray = this.checkFileSuccess(this.state.photoArray);
+    if (photoArray) {
+      this.submitMerchant();
+    }
   },
   uploadFileSuccess(e){
       if (Platform.OS == 'android')
@@ -188,18 +205,6 @@ var ProgramInfo = React.createClass({
       return uploadList;
   },
   _save() {
-    if (!typeinData.ProjectInfo.CompanyName) {
-      return Util.AlertMessage('请填写公司名称')
-    }
-    if (!typeinData.ProjectInfo.Contacts) {
-      return Util.AlertMessage('请填写联系人')
-    }
-    if (!typeinData.ProjectInfo.ContactPhone) {
-      return Util.AlertMessage('请填写联系电话')
-    }
-    if (!typeinData.ProjectInfo.ConstructionSituation) {
-      return Util.AlertMessage('请填写建设情况')
-    }
     typeinData.OperationType = 0
     typeinData.LandInfo = paramsProgramInfo.LandInfo
     let uploadImg = this.getUserSelectPhotoList()
@@ -211,13 +216,14 @@ var ProgramInfo = React.createClass({
       })
     } else {
       this.props.sendPostJSON({
-        url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+        url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
         body: JSON.stringify(typeinData),
         success: (response) => {
+          console.log(response.message)
           this.props.maskViewHandler(false)
           if (JSON.parse(response.message).status == 'SUCCESS') {
             Util.AlertMessage("保存成功")
-            this.props.jumpReplacePage(Recommend, 'recommend')
+            this.props.navigator.popToTop()
           } else {
             Util.AlertMessage("保存失败")
             this.props.jumpReplacePage(Recommend, 'recommend')
@@ -226,6 +232,47 @@ var ProgramInfo = React.createClass({
       })
     }
   },
+  // _save() {
+  //   if (!typeinData.ProjectInfo.CompanyName) {
+  //     return Util.AlertMessage('请填写公司名称')
+  //   }
+  //   if (!typeinData.ProjectInfo.Contacts) {
+  //     return Util.AlertMessage('请填写联系人')
+  //   }
+  //   if (!typeinData.ProjectInfo.ContactPhone) {
+  //     return Util.AlertMessage('请填写联系电话')
+  //   }
+  //   if (!typeinData.ProjectInfo.ConstructionSituation) {
+  //     return Util.AlertMessage('请填写建设情况')
+  //   }
+  //   typeinData.OperationType = 0
+  //   typeinData.LandInfo = paramsProgramInfo.LandInfo
+  //
+  //   this.props.maskViewHandler(true)
+  //   this.props.sendPostJSON({
+  //     url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+  //     body: JSON.stringify(typeinData),
+  //     success: (response) => {
+  //       this.props.maskViewHandler(false)
+  //       if (JSON.parse(response.message).status == 'SUCCESS') {
+  //         Util.AlertMessage("保存成功")
+  //         this.props.navigator.popToTop()
+  //       } else {
+  //         Util.AlertMessage("保存失败")
+  //         this.props.jumpReplacePage(LandIndex, 'landIndex')
+  //       }
+  //     }
+  //   })
+  //   let uploadImg = this.getUserSelectPhotoList()
+  //   if (uploadImg.length > 0) {
+  //     this.props.uploadFileHandler({
+  //       data: uploadImg,
+  //       callBack: this.uploadFileSuccess
+  //     })
+  //   }
+  //
+  //
+  // },
   render() {
     let photoProps = {
       selectPhoto: this.state.photoArray,
@@ -235,8 +282,7 @@ var ProgramInfo = React.createClass({
       selectPhotoHandler: this.props.selectPhotoHandler,
       selectPhotoSuccess: this.selectPhotoSuccess
     }
-    let photo
-    console.log(this.state.photoArray)
+
 
     return (
       <View style={styles.container}>
@@ -260,8 +306,7 @@ var ProgramInfo = React.createClass({
           </View>
           <InputLabel label="其它信息" tabs="OtherInfo" getValue={this.getValue} />
           <View style={styles.photoContainer}>
-            <Text allowFontScaling={false} style={styles.photoText}>上传图片</Text>
-            <Text allowFontScaling={false} style={styles.photoTextBottom}>(只选3张)</Text>
+            <Text allowFontScaling={false} style={styles.photoText}>上传图片（最多选3张）</Text>
             <View style={styles.photo}>
               <SelectPhotoControl {...photoProps} />
             </View>
@@ -274,7 +319,7 @@ var ProgramInfo = React.createClass({
                 buttonText="保存"
             />
             <ButtonControl
-                userClick={this._save}
+                userClick={this._nextFun}
                 buttonStyle={styles.btnContainer}
                 buttonTextStyle={styles.btnText}
                 buttonText="提交"
@@ -323,16 +368,14 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     width:Dimensions.get('window').width,
-    height:180,
-    overflow:'hidden',
     marginLeft:5,
-    flexWrap:'wrap'
   },
   photoText: {
-    marginTop:30,
-    marginLeft:10,
+    height:40,
     fontSize: 15,
-    color: '#3b3b3b',
+    color:'#3b3b3b',
+    marginLeft:10,
+    marginTop:10,
   },
   photoTextBottom:{
     marginTop:5,
@@ -341,9 +384,7 @@ const styles = StyleSheet.create({
     color: '#a7a7a7',
   },
   photo: {
-    position: 'absolute',
-    top: -70,
-    left: 100,
+
   },
   nexBtn: {
     margin: 10,
@@ -351,7 +392,7 @@ const styles = StyleSheet.create({
   },
   btnGroup: {
     flexDirection: 'row',
-    marginTop:100,
+    marginTop:20,
   },
   btnContainer: {
     height:40,

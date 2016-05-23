@@ -20,7 +20,7 @@ var Partner = React.createClass({
   },
   componentWillMount() {
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
       success: (response) => StorageUtil.setStorageItem('Partner', response.message)
     })
 

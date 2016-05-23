@@ -98,7 +98,7 @@ export default class AddRecom extends Component{
         this.setState(this.state)
       } else {
         this.props.sendPostJSON({
-          url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+          url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
           success: (response) => {
             let partnerData = JSON.parse(response.message)
             let LandNature = []
@@ -194,7 +194,7 @@ export default class AddRecom extends Component{
     typeinData.LandInfo.DemolitionSituationCode = this.state.DemolitionSituationCode
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
       body: JSON.stringify(typeinData),
       success: (response) => {
         this.props.maskViewHandler(false)
@@ -236,7 +236,7 @@ export default class AddRecom extends Component{
     typeinData.LandInfo.DemolitionSituationCode = this.state.DemolitionSituationCode
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
       body: JSON.stringify(typeinData),
       success: (response) => {
         this.props.maskViewHandler(false)
@@ -396,6 +396,9 @@ export default class AddRecom extends Component{
                 <Text allowFontScaling={false} style={styles.starView}>*</Text>
                 <InputLabel label="规划建筑面积" boardType="numeric" tabs="PlanBuildAreas" tags="m²" getValue={this.getValue} value={this.state.PlanBuildAreas} />
               </View>
+                <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue} value={this.state.GreeninGate} />
+                <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue} value={this.state.HighLimit} />
+                <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue} value={this.state.StartingPrice} />
               <View style={styles.pickerControl}>
                 <View style={styles.pickerTextContainer}>
                   <Text allowFontScaling={false} style={styles.pickerText} >出让形式</Text>
@@ -406,9 +409,7 @@ export default class AddRecom extends Component{
                   </View>
                 </View>
               </View>
-                <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue} value={this.state.GreeninGate} />
-                <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue} value={this.state.HighLimit} />
-                <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue} value={this.state.StartingPrice} />
+
               <View style={styles.pickerControlLeft}>
                 <View style={styles.pickerTextContainerLeft}>
                   <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
@@ -513,7 +514,7 @@ const styles = StyleSheet.create({
     fontSize:15,
   },
   selectMe: {
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   listItems: {
@@ -539,34 +540,34 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   pickerLeftControl: {
-    flex:7,
+    flex:6,
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius:10
   },
   pickerTextContainer: {
-    flex:3,
+    flex:4,
     justifyContent: 'center'
   },
   pickerTextContainerLeft: {
-    flex:3,
+    flex:4,
     justifyContent: 'center'
   },
   pickerText: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextLeft: {
-    flex:7,
+    flex:6,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextRight: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
     marginTop:10,
@@ -584,7 +585,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb'
   },
   datePicker: {
-    flex:7,
+    flex:6,
     height: 40,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
@@ -598,7 +599,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   selectDate:{
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   dateTextIOS:{
@@ -622,13 +623,16 @@ const styles = StyleSheet.create({
     color: '#a7a7a7'
   },
   btnGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+
   },
   btnContainer: {
     height:40,
     flex:5,
-    margin:10,
-    marginTop:20,
+    marginLeft:10,
+    marginRight:10,
+    marginTop:15,
+    marginBottom:20,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

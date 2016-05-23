@@ -73,7 +73,7 @@ export default class TransLandEdit extends Component{
 
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
       body: JSON.stringify(typeinData),
       success: (response) => {
         this.props.maskViewHandler(false)
@@ -140,7 +140,7 @@ export default class TransLandEdit extends Component{
         })
       } else {
         this.props.sendPostJSON({
-          url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+          url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
           success: (response) => {
             let partnerData = JSON.parse(response.message)
             let LandNature = []
@@ -294,6 +294,7 @@ export default class TransLandEdit extends Component{
           </View>
           <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue.bind(this)} value={this.state.GreeninGate.toString()} />
           <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue.bind(this)} value={this.state.HighLimit.toString()} />
+          <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.EstimateTransactionPrice.toString()} />
           <View style={styles.pickerControlLeft}>
             <View style={styles.pickerTextContainerLeft}>
               <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
@@ -314,7 +315,6 @@ export default class TransLandEdit extends Component{
               </View>
             </View>
           </View>
-          <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.EstimateTransactionPrice.toString()} />
           <View style={styles.datepickerContainer}>
             <Text allowFontScaling={false} style={styles.datePickerText}>预计转让时间</Text>
             {datePickerButton}
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     fontSize:15,
   },
   selectMe: {
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   selectMeRight:{
@@ -403,6 +403,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   pickerControlLeft: {
+    flex:4,
     height:40,
     alignSelf: 'stretch',
     flexDirection: 'row',
@@ -412,37 +413,45 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb',
   },
   pickerTextContainerLeft: {
-    flex:3,
+    flex:4,
     justifyContent: 'center'
   },
+  pickerTextContainer: {
+    flex:4,
+    justifyContent: 'center'
+  },
+  pickerText: {
+    flex:4,
+    color:'#3b3b3b',
+    fontSize:15,
+    marginLeft:5,
+  },
   pickerTextLeft: {
-    flex:7,
+    flex:6,
     color:'#3b3b3b',
     fontSize:15,
     marginLeft:5,
   },
   pickerTextRight: {
-    flex:3,
+    flex:4,
     color:'#3b3b3b',
     fontSize:15,
+    marginTop:10,
+    marginLeft:5,
   },
   pickerLeftControl: {
-    flex:7,
+    flex:6,
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
   },
   pickerTextContainer: {
-    width: 100,
+    flex:4,
     justifyContent: 'center'
   },
-  pickerText: {
-    flex:3,
-    color:'#3b3b3b',
-    marginLeft:5,
-  },
+
   datePickerRight: {
-    flex:7,
+    flex:6,
     height: 40,
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
@@ -459,7 +468,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ebebeb'
   },
   datePickerText: {
-    flex:3,
+    flex:4,
     justifyContent: 'center',
     fontSize: 15,
     color: '#3b3b3b',
@@ -472,7 +481,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   selectDate:{
-    flex:7,
+    flex:6,
     marginRight:10,
   },
   dateTextIOS:{
@@ -480,10 +489,10 @@ const styles = StyleSheet.create({
     color:'#a7a7a7',
   },
   datePicker: {
-    flex:3,
+    flex:4,
   },
   buttonText: {
-    flex:7,
+    flex:6,
     color:'#a7a7a7',
     fontSize: 15,
     marginTop:10,
@@ -492,6 +501,7 @@ const styles = StyleSheet.create({
     height:40,
     margin:10,
     marginTop: 20,
+    marginBottom:10,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

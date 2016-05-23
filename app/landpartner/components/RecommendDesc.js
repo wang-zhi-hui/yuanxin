@@ -25,16 +25,16 @@ export default class RecommendDesc extends Component {
     typeinData.Code = paramsRecommendDesc.Code
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
-      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBaseAboutCode',
+      url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBaseAboutCode',
       body: JSON.stringify(typeinData),
       success: (response) => {
         this.props.maskViewHandler(false)
         if (JSON.parse(response.message).status == 'SUCCESS') {
           Util.AlertMessage("保存成功")
-            this.props.navigator.popToTop()
+          this.props.navigator.popToTop()
         } else {
           Util.AlertMessage("保存失败")
-            this.props.navigator.popToTop()
+          this.props.navigator.popToTop()
         }
       }
     })
@@ -146,25 +146,27 @@ export default class RecommendDesc extends Component {
                 </View>
                 <View style={styles.bottomInfoText}>
                   <Text allowFontScaling={false} style={styles.textLeftItem}>绿化率：</Text>
-                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.GreeninGate}</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.GreeninGate}%</Text>
+                </View>
+                <View style={styles.bottomInfoText}>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>限高：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.HighLimit}m</Text>
+                </View>
+                <View style={styles.bottomInfoText}>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>起始价：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}万元</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
                   <Text allowFontScaling={false} style={styles.textLeftItem}>通平情况：</Text>
                   <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.MunicipalSupporName}</Text>
                 </View>
                   {TransferFormName}
-                <View style={styles.bottomInfoText}>
-                  <Text allowFontScaling={false} style={styles.textLeftItem}>限高：</Text>
-                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.HighLimit}m</Text>
-                </View>
+
                 <View style={styles.bottomInfoText}>
                    <Text allowFontScaling={false} style={styles.textLeftItem}>拆迁情况：</Text>
                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.DemolitionSituationName}</Text>
                  </View>
-                <View style={styles.bottomInfoText}>
-                    <Text allowFontScaling={false} style={styles.textLeftItem}>起始价：</Text>
-                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}万元</Text>
-                </View>
+
                 <View style={styles.bottomInfoText}>
                     <Text allowFontScaling={false} style={styles.textLeftItem}>推出时间：</Text>
                     <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.LaunchTime}</Text>
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
      borderBottomColor:'#eaeaea',
    },
    textLeftItem: {
-     flex:3,
+     flex:4,
      fontSize: 15,
      color: '#3b3b3b',
      marginLeft:10,
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
 
    },
    textRightItem: {
-     flex:7,
+     flex:6,
      height:18,
      color: '#a7a7a7',
      fontSize: 15,
