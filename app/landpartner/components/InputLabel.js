@@ -22,12 +22,12 @@ var InputLabel = React.createClass({
 	render(){
 		let tag = null
 		if (this.props.tags) {
-			tag = <Text>{this.props.tags}</Text>
+			tag = <Text allowFontScaling={false} style={styles.starView}>{this.props.tags}</Text>
 		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.labelTextView}>
-					<Text style={styles.labelLeftText}>
+					<Text allowFontScaling={false} style={styles.labelLeftText}>
 						{this.props.label}
 					</Text>
 				</View>
@@ -58,6 +58,20 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#ebebeb',
 		paddingLeft: 10
 	},
+	starView:{
+		fontSize:12,
+		color:'#a7a7a7',
+		position:'absolute',
+		top:10,
+		right:10,
+	},
+	star:{
+		position:'absolute',
+		top:10,
+		left:5,
+		fontSize:12,
+		color:'#f00',
+	},
 	labelTextView:{
 		flex:3,
 		justifyContent: 'center',
@@ -67,7 +81,8 @@ const styles = StyleSheet.create({
 	},
 	labelLeftText: {
 		color:'#3b3b3b',
-		fontSize:15
+		fontSize:15,
+		marginLeft:5,
 	},
 	labelTextRightView:{
 		flex: 7,

@@ -18,24 +18,41 @@ import AddRecom from './components/AddRecom'
 import StorageUtil from '../utils/StorageUtil'
 import SelectDataInfo from '../control/SelectDataInfo'
 import Rules from './components/Rules'
+import Util from '../utils/Util'
 var typeinData = {}
 
 var LandIndex = React.createClass({
 	getInitialState() {
 		return {
-			LandSourcesName: '招拍挂',
+			LandSourcesName: '',
 			isShowSelectArea: 0,
 			locationName: '请选择地区',
 			position: '',
-			selections: []
+			selections: [],
+			LandSourcesCode: '',
+			LandSourcesName: '招拍挂'
 		}
 	},
 	_nextFun() {
+		if(!this.state.LandSourcesCode) {
+			return Util.AlertMessage('请选择土地来源')
+		}
+		if(this.state.locationName == '请选择地区') {
+			return Util.AlertMessage('请选择所在地区')
+		}
+		if(!typeinData.AddressDetail) {
+			return Util.AlertMessage('请填写详细地址')
+		}
+		typeinData.LandSourcesCode = this.state.LandSourcesCode
+		console.log(typeinData)
 		if (this.state.LandSourcesName == '招拍挂') {
 			this.props.jumpPushPage(AddRecom, 'addRecom', paramsAddRecom={...typeinData})
+
 		} else {
 			this.props.jumpPushPage(TransLand, 'transLand', paramsTransLand={...typeinData})
 		}
+		typeinData = {}
+		this.setState({locationName: '请选择地区'})
 	},
 	getValue(value, label) {
 		if (label == 'AddressDetail') {
@@ -60,22 +77,34 @@ var LandIndex = React.createClass({
 				lists = JSON.parse(result).data.LandResource.data
 				let selections = []
 				for (let i = 0; i < lists.length; i++) {
-					selections.push({text: lists[i].Name, selected: false, code: lists[i].Code, click: () => this.setValue(i)})
+					if (lists[i].Name == "招拍挂") {
+						this.state.LandSourcesCode = lists[i].Code
+						selections.push({text: lists[i].Name, selected: true, code: lists[i].Code, click: () => this.setValue(i)})
+					} else {
+						selections.push({text: lists[i].Name, selected: false, code: lists[i].Code, click: () => this.setValue(i)})
+					}
 				}
-				this.setState({selections: selections})
+				this.state.selections = selections
+				this.setState(this.state)
 			} else {
 				this.props.sendPostJSON({
-		      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
-		      success: (response) => {
+					url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/GenerateDataDictionary',
+					success: (response) => {
 						let selections = []
 						let lists = JSON.parse(response.message).data.LandResource.data
 						for (let i = 0; i < lists.length; i++) {
-							selections.push({text: lists[i].Name, selected: false, code: lists[i].Code, click: () => this.setValue(i)})
+							if (lists[i].Name == "招拍挂") {
+								this.state.LandSourcesCode = lists[i].Code
+								selections.push({text: lists[i].Name, selected: true, code: lists[i].Code, click: () => this.setValue(i)})
+							} else {
+								selections.push({text: lists[i].Name, selected: false, code: lists[i].Code, click: () => this.setValue(i)})
+							}
 						}
-						this.setState({selections: selections})
+						this.state.selections = selections
+						this.setState(this.state)
 						StorageUtil.setStorageItem('Partner', response.message)
 					}
-		    })
+				})
 			}
 		})
 	},
@@ -87,7 +116,7 @@ var LandIndex = React.createClass({
 		selections[result].selected = true
 		this.state.selections = selections
 		this.state.LandSourcesName = selections[result].text
-		typeinData.LandSourcesCode = selections[result].code
+		this.state.LandSourcesCode = selections[result].code
 		this.setState(this.state)
 	},
 	getPosition() {
@@ -139,14 +168,17 @@ var LandIndex = React.createClass({
 				itemColor: "#FFFFFF",
 				itemSelectedColor: "#FF5001",
 				textColor: "#FF5001",
-				textSelectedColor: "#FFFFFF"
+				textSelectedColor: "#FFFFFF",
+
 			}
 			return (
 				<View style={styles.container}>
 					<ActionBar {...actionBarProp} />
 					<View style={styles.pickerControl}>
+						<Text allowFontScaling={false} style={styles.starViewLeft}>*</Text>
 						<View style={styles.pickerTextContainer}>
-							<Text style={styles.pickerText} >土地来源</Text>
+							<Text allowFontScaling={false} style={styles.pickerText} >土地来源</Text>
+
 						</View>
 						<View style={styles.pickerLeftControl}>
 							<View style={styles.selectMe}>
@@ -155,10 +187,12 @@ var LandIndex = React.createClass({
 						</View>
 					</View>
 					<View style={styles.selectContainer}>
-						<Text style={styles.selectLeft}>所在地区</Text>
-						<Text style={styles.selectRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.locationName}</Text>
+						<Text allowFontScaling={false} style={styles.starViewLeft}>*</Text>
+						<Text allowFontScaling={false} style={styles.selectLeft}>所在地区</Text>
+						<Text allowFontScaling={false} style={styles.selectRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.locationName}</Text>
 					</View>
 					<View style={styles.InputLabelText}>
+						<Text allowFontScaling={false} style={styles.starViewLeft}>*</Text>
 						<InputLabel label="详细地址" tabs="AddressDetail" getValue={this.getValue} />
 					</View>
 					<ButtonControl
@@ -197,6 +231,18 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		color:'#fff',
 		fontSize:15,
+	},
+	starView:{
+		color:'red',
+		marginRight:5,
+		fontSize:15,
+	},
+	starViewLeft:{
+		color:'red',
+		fontSize:15,
+		position:'absolute',
+		top:8,
+		left:5,
 	},
 	Addresscontainer:{
 		flexDirection:'row',
@@ -237,7 +283,7 @@ const styles = StyleSheet.create({
 	pickerText: {
 		color:'#3b3b3b',
 		fontSize:15,
-		marginTop:3,
+		marginLeft:5,
   },
 	selectMe: {
 		flex:7,
@@ -252,7 +298,7 @@ const styles = StyleSheet.create({
 	},
 	selectLeft: {
 		flex:3,
-		marginLeft: 10,
+		marginLeft: 15,
 		fontSize: 15,
 		color: '#3b3b3b'
 	},

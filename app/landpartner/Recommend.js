@@ -53,7 +53,7 @@ var Recommend = React.createClass({
   render() {
     return (
       <View style={styles.container}>
-        <ActionBar actionName="我的推荐" isDefaultBack={this.props.jumpPop} />
+        <ActionBar allowFontScaling="false" actionName="我的推荐" isDefaultBack={this.props.jumpPop} />
         <ListView
           dataSource={ds.cloneWithRows(this.state.dataSource)}
           onEndReachedThreshold={30}

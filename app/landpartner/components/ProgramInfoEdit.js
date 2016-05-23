@@ -179,13 +179,9 @@ var ProgramInfoEdit = React.createClass({
       selectPhotoSuccess: this.selectPhotoSuccess
     }
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container}  keyboardShouldPersistTaps={true}>
       <ActionBar actionName="推荐" isDefaultBack={this.props.jumpPop}/>
-        {// <View style={styles.header}>
-        //   <Text style={styles.headerText}>土地/项目转让</Text>
-        // </View>
-        // <ProcessNav status={2} />
-      }
+
         <View style={styles.greyLine}>
         </View>
         <View style={styles.header}>
@@ -245,8 +241,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   photoContainer: {
-    height: 80,
-    flexDirection: 'row',
+    height: Dimensions.get('window').height,
+    flexDirection: 'column',
     overflow: 'hidden'
   },
   photoText: {
@@ -255,9 +251,11 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   photo: {
-    position: 'absolute',
+    width:200,
+    /*position: 'absolute',
     top: -70,
-    left: 100
+    left: 100,*/
+    flexWrap:'wrap'
   },
   nexBtn: {
     margin: 10,

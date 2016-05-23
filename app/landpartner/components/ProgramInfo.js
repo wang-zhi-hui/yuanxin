@@ -22,11 +22,19 @@ var typeinData = {
   ProjectInfo: {},
   ProjectImageInfoList: []
 }
-
 var ProgramInfo = React.createClass({
   getInitialState() {
     return {
-      photoArray: []
+      photoArray: [],
+    }
+  },
+  selectPhotoHandler(){
+    if (this.props.maxCount > this.props.selectPhoto.length) {
+      this.props.selectPhotoHandler({
+        count: (this.props.maxCount - this.props.selectPhoto.length),
+        tag: this.props.selectTag,
+        callBack: this.props.selectPhotoSuccess
+      });
     }
   },
   _nextFun() {
@@ -133,17 +141,36 @@ var ProgramInfo = React.createClass({
         }
       })
   },
+  uploadFileOneSuccess(e) {
+    let newsFileList
+    newsFileList = OSSUtil.setFileSuccess(e[0], this.state.photoArray)
+    this.state.photoArray = newsFileList
+    this.setState(this.state)
+    for (let i = 0; i < this.state.photoArray.length; i++) {
+      typeinData.ProjectImageInfoList.push(OSSUtil.getItemFile(this.state.photoArray))
+    }
+    this.props.sendPostJSON({
+      url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/InsertLandInfo',
+      body: JSON.stringify(typeinData),
+      success: (response) => {
+        this.props.maskViewHandler(false)
+        if (JSON.parse(response.message).status == 'SUCCESS') {
+          Util.AlertMessage("提交成功")
+          this.props.jumpReplacePage(Recommend, 'recommend')
+        } else {
+          Util.AlertMessage("提交失败")
+          this.props.jumpReplacePage(Recommend, 'recommend')
+        }
+      }
+    })
+  },
   uploadFileSuccess(e){
       if (Platform.OS == 'android')
           this.androidImageSuccess(e);
       else
           this.uploadFileOneSuccess(e);
   },
-  // deleteSelectPhone(url, tag){
-  //     if (tag == 'photoArray')
-  //         this.state.photoArray = [];
-  //     this.setState(this.state);
-  // },
+  
   deleteSelectPhone(url, tag){
     if (tag == 'photoArray') {
         for (let i = 0; i < this.state.photoArray.length; i++) {
@@ -161,6 +188,18 @@ var ProgramInfo = React.createClass({
       return uploadList;
   },
   _save() {
+    if (!typeinData.ProjectInfo.CompanyName) {
+      return Util.AlertMessage('请填写公司名称')
+    }
+    if (!typeinData.ProjectInfo.Contacts) {
+      return Util.AlertMessage('请填写联系人')
+    }
+    if (!typeinData.ProjectInfo.ContactPhone) {
+      return Util.AlertMessage('请填写联系电话')
+    }
+    if (!typeinData.ProjectInfo.ConstructionSituation) {
+      return Util.AlertMessage('请填写建设情况')
+    }
     typeinData.OperationType = 0
     typeinData.LandInfo = paramsProgramInfo.LandInfo
     let uploadImg = this.getUserSelectPhotoList()
@@ -190,23 +229,39 @@ var ProgramInfo = React.createClass({
   render() {
     let photoProps = {
       selectPhoto: this.state.photoArray,
-      maxCount: 9,
+      maxCount: 3,
       selectTag: 'photoArray',
       deleteSelectPhone: this.deleteSelectPhone,
       selectPhotoHandler: this.props.selectPhotoHandler,
       selectPhotoSuccess: this.selectPhotoSuccess
     }
+    let photo
+    console.log(this.state.photoArray)
+
     return (
       <View style={styles.container}>
         <ActionBar actionName="项目信息" isDefaultBack={this.props.jumpPop} />
         <ScrollView>
-          <InputLabel label="公司名称" tabs="CompanyName" getValue={this.getValue} />
-          <InputLabel label="联系人" tabs="Contacts" getValue={this.getValue} />
-          <InputLabel label="联系电话" boardType="numeric" tabs="ContactPhone" getValue={this.getValue} />
-          <InputLabel label="建设情况" tabs="ConstructionSituation" getValue={this.getValue} />
-          <InputLabel label="其他信息" tabs="OtherInfo" getValue={this.getValue} />
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="公司名称" tabs="CompanyName" getValue={this.getValue} />
+          </View>
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="联系人" tabs="Contacts" getValue={this.getValue} />
+          </View>
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="联系电话" boardType="numeric" tabs="ContactPhone" getValue={this.getValue} />
+          </View>
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="建设情况" tabs="ConstructionSituation" getValue={this.getValue} />
+          </View>
+          <InputLabel label="其它信息" tabs="OtherInfo" getValue={this.getValue} />
           <View style={styles.photoContainer}>
-            <Text style={styles.photoText}>上传图片</Text>
+            <Text allowFontScaling={false} style={styles.photoText}>上传图片</Text>
+            <Text allowFontScaling={false} style={styles.photoTextBottom}>(只选3张)</Text>
             <View style={styles.photo}>
               <SelectPhotoControl {...photoProps} />
             </View>
@@ -234,7 +289,8 @@ var ProgramInfo = React.createClass({
 const styles = StyleSheet.create({
   container: {
     height: Dimensions.get('window').height,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+
   },
   header: {
     height:44,
@@ -254,31 +310,48 @@ const styles = StyleSheet.create({
     backgroundColor: '#efeff4',
     alignSelf: 'stretch'
   },
+  starView:{
+    color:'red',
+    fontSize:12,
+    position:'absolute',
+    top:10,
+    left:5,
+  },
   listItems: {
     padding: 5,
     backgroundColor: '#FFFFFF'
   },
   photoContainer: {
-    height: 80,
-    flexDirection: 'row',
-    overflow: 'hidden'
+    width:Dimensions.get('window').width,
+    height:180,
+    overflow:'hidden',
+    marginLeft:5,
+    flexWrap:'wrap'
   },
   photoText: {
-    margin: 10,
+    marginTop:30,
+    marginLeft:10,
     fontSize: 15,
-    color: '#3b3b3b'
+    color: '#3b3b3b',
+  },
+  photoTextBottom:{
+    marginTop:5,
+    marginLeft:15,
+    fontSize: 11,
+    color: '#a7a7a7',
   },
   photo: {
     position: 'absolute',
     top: -70,
-    left: 100
+    left: 100,
   },
   nexBtn: {
     margin: 10,
     flex: 1
   },
   btnGroup: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginTop:100,
   },
   btnContainer: {
     height:40,

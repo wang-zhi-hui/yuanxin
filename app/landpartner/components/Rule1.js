@@ -14,7 +14,7 @@ export default class Rule1 extends Component{
     return (
       <View style={styles.container}>
         <ActionBar actionName="合伙人须知"  isDefaultBack={this.props.jumpPop} />
-        <Text style={styles.showText}>
+        <Text allowFontScaling={false} style={styles.showText}>
           这里是合伙人须知的具体内容
         </Text>
       </View>

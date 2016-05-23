@@ -14,7 +14,7 @@ export default class Rules extends Component{
     return (
       <View style={styles.container}>
         <ActionBar actionName="平台用户协议"  isDefaultBack={this.props.jumpPop} />
-        <Text style={styles.showText}>
+        <Text allowFontScaling={false} style={styles.showText}>
           这里是平台用户协议的具体内容
         </Text>
       </View>

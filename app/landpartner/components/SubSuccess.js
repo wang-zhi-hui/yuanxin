@@ -21,7 +21,7 @@ export default class SubSuccess extends Component {
       <View style={styles.container}>
         <ActionBar actionName={this.state.actionName} isDefaultBack={this.props.jumpPop} />
         <View style={styles.header}>
-          <Text style={styles.headerText}>{paramsSubSuccess.successTille}</Text>
+          <Text allowFontScaling="false" style={styles.headerText}>{paramsSubSuccess.successTille}</Text>
         </View>
         <ProcessNav status={3} />
         <View style={styles.greyLine}>
@@ -31,10 +31,10 @@ export default class SubSuccess extends Component {
             source={require('../images/subOk.png')}
             style={styles.subOk}
           />
-          <Text style={styles.subText}>
+          <Text allowFontScaling={false} style={styles.subText}>
             提交成功！
           </Text>
-          <Text style={styles.subDesc}>
+          <Text allowFontScaling={false} style={styles.subDesc}>
             非常感谢您的参与！项目情况有了新的进展将会及时跟您联系，请及时关注！
           </Text>
         </View>

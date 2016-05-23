@@ -22,18 +22,15 @@ export default class RecommendItem extends Component {
       <TouchableHighlight onPress={this._nextFun.bind(this)}>
         <View style={styles.container}>
           <View style={styles.reStatus}>
-            <Text style={styles.CreateTimeText}>{this.props.CreateTime}</Text>
+            <Text allowFontScaling={false} style={styles.CreateTimeText}>{this.props.CreateTime}</Text>
             <View style={styles.evaluateText}>
-              <Text style={styles.evaluate}>{this.props.StatusImageInfoName}</Text>
+              <Text allowFontScaling={false} style={styles.evaluate}>{this.props.StatusImageInfoName}</Text>
             </View>
           </View>
           <View style={styles.reAddress}>
-            <Text>所在地区：</Text>
-            <Text style={styles.reLandLeftText}>{this.props.Address}</Text>
-          </View>
-          <View style={styles.reLand}>
-            <Text style={styles.reLandLeft}>建设用地面积：<Text style={styles.reLandLeftText}>{this.props.BuildLandAreas}</Text></Text>
-            <Text style={styles.reLandRight}>土地来源：<Text style={styles.reLandLeftText}>{this.props.LandSourcesName}</Text></Text>
+            <Text allowFontScaling={false} style={styles.reLandLeft}>土地来源：<Text allowFontScaling={false} style={styles.reLandLeftText}>{this.props.LandSourcesName}</Text></Text>
+            <Text allowFontScaling={false} style={styles.reLandLeft}>建设用地面积：<Text allowFontScaling={false} style={styles.reLandLeftText}>{this.props.BuildLandAreas}m²</Text></Text>
+            <Text allowFontScaling={false} style={styles.reLandLeft}>所在地区： <Text allowFontScaling={false} style={styles.reLandLeftText}>{this.props.Address}</Text></Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -56,15 +53,10 @@ const styles = StyleSheet.create({
     marginTop:12,
   },
   reAddress: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginLeft:10,
     marginTop:4,
-  },
-  reLand: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginBottom:11,
+    marginBottom:10,
   },
   reLandLeft:{
     marginLeft:10,
@@ -88,7 +80,7 @@ const styles = StyleSheet.create({
   },
   evaluateText:{
     position:'absolute',
-    top:-2.5,
+    top:-3,
     right:10,
     borderWidth:1,
     borderColor:'#ff5001',

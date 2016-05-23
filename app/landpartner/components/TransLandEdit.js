@@ -1,15 +1,17 @@
 import React, {
-  Component,
-  Dimensions,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  DatePickerAndroid,
-  Picker,
-  ListView,
-  ScrollView,
-  View
+    Component,
+    Dimensions,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    DatePickerAndroid,
+    DatePickerIOS,
+    Picker,
+    Modal,
+    ListView,
+    ScrollView,
+    View
 } from 'react-native'
 import InputLabel from './InputLabel'
 import ButtonControl from '../../control/ButtonControl'
@@ -27,11 +29,22 @@ export default class TransLandEdit extends Component{
     super(props)
     this.state = {
       actionName: '土地信息',
-      EstimateTransferTime: paramsTransLand.EstimateTransferTime,
+      EstimateTransferTime: '请选择时间',
+      date: new Date(),
+      modalVisible: false,
       isShowSelectArea: 0,
       LandNature: [],
       RelocatesSituation: [],
-      LevelingCondition: paramsTransLand.MunicipalSupporName
+      LevelingCondition: "请选择通平情况",
+      LandScope: paramsTransLand.LandScope,
+      BuildLandAreas: paramsTransLand.BuildLandAreas,
+      PlanBuildAreas: paramsTransLand.PlanBuildAreas,
+      GreeninGate: paramsTransLand.GreeninGate,
+      HighLimit: paramsTransLand.HighLimit,
+      EstimateTransactionPrice: paramsTransLand.EstimateTransactionPrice,
+      LandNatureCode: paramsTransLand.LandNatureCode,
+      MunicipalSupportCode: paramsTransLand.MunicipalSupportCode,
+      DemolitionSituationCode: paramsTransLand.DemolitionSituationCode
     }
   }
   _submit() {
@@ -75,25 +88,25 @@ export default class TransLandEdit extends Component{
   }
   getValue(value, label) {
     if (label == 'LandScope') {
-      typeinData.LandInfo.LandScope = value
+      this.state.LandScope = value
     }
     if (label == 'PlanBuildAreas') {
-      typeinData.LandInfo.PlanBuildAreas = value
+      this.state.PlanBuildAreas = value
     }
     if (label == 'BuildLandAreas') {
-      typeinData.LandInfo.BuildLandAreas = value
+      this.state.BuildLandAreas = value
     }
     if (label == 'GreeninGate') {
-      typeinData.LandInfo.GreeninGate = value
+      this.state.GreeninGate = value
     }
     if (label == 'HighLimit') {
-      typeinData.LandInfo.HighLimit = value
+      this.state.HighLimit = value
     }
     if (label == 'EstimateTransferTime') {
-      typeinData.LandInfo.LaunchTime = value
+      this.state.LaunchTime = value
     }
     if (label == 'EstimateTransactionPrice') {
-      typeinData.LandInfo.StartingPrice = value
+      this.state.StartingPrice = value
     }
   }
   componentWillMount() {
@@ -122,7 +135,6 @@ export default class TransLandEdit extends Component{
         }
         this.setState({
           LandNature: LandNature,
-          LevelingCondition: LevelingCondition,
           RelocatesSituation: RelocatesSituation
         })
       } else {
@@ -152,7 +164,6 @@ export default class TransLandEdit extends Component{
             }
             this.setState({
               LandNature: LandNature,
-              LevelingCondition: LevelingCondition,
               RelocatesSituation: RelocatesSituation
             })
             StorageUtil.setStorageItem('Partner', response.message)
@@ -193,14 +204,6 @@ export default class TransLandEdit extends Component{
       this.state.LandNature = LandNature
       typeinData.LandInfo.LandNatureCode = LandNature[item].code
     }
-    if (result == "LevelingCondition") {
-      for (let item of LevelingCondition) {
-        item.selected = false
-      }
-      LevelingCondition[item].selected = true
-      this.state.LevelingCondition = LevelingCondition
-      typeinData.LandInfo.MunicipalSupportCode = LevelingCondition[item].code
-    }
     if (result == "RelocatesSituation") {
       for (let item of RelocatesSituation) {
         item.selected = false
@@ -213,10 +216,9 @@ export default class TransLandEdit extends Component{
   }
   showSelectDataReturn(id, name) {
     typeinData.LandInfo.MunicipalSupportCode = id
-    this.setState({
-      isShowSelectArea: 0,
-      LevelingCondition: name
-    })
+    this.state.isShowSelectArea = 0
+    this.state.LevelingCondition = name
+    this.setState(this.state)
   }
   render() {
     if (this.state.isShowSelectArea == 1) {
@@ -252,37 +254,57 @@ export default class TransLandEdit extends Component{
       textColor: "#FF5001",
       textSelectedColor: "#FFFFFF"
     }
+    let datePickerButton
+    if (Platform.OS == 'ios') {
+      datePickerButton = <View style={styles.selectDate}>
+        <Text allowFontScaling={false} style={styles.dateTextIOS} onPress={()=>this.setState({modalVisible: true})}>{this.state.date.toLocaleDateString()}</Text>
+      </View>
+    } else {
+      datePickerButton = <TouchableHighlight
+          style={styles.datePicker}
+          onPress={this.showPicker.bind(this)}
+      >
+        <Text allowFontScaling={false} style={styles.dateText}>{this.state.LaunchTime}</Text>
+      </TouchableHighlight>
+    }
     return (
-        <ScrollView style={styles.viewContainer} keyboardShouldPersistTaps={true}>
+        <ScrollView style={styles.viewContainer} >
           <ActionBar actionName={this.state.actionName} isDefaultBack={this.props.jumpPop}/>
-          <InputLabel label="四至" boardType="default" tabs="LandScope" getValue={this.getValue} value={paramsTransLand.LandScope} />
+          <InputLabel label="四至" boardType="default" tabs="LandScope" getValue={this.getValue.bind(this)} value={this.state.LandScope} />
           <View style={styles.pickerControl}>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
             <View style={styles.pickerTextContainer}>
-              <Text style={styles.pickerText} >用地性质</Text>
+              <Text allowFontScaling={false} style={styles.pickerText} >用地性质</Text>
             </View>
             <View style={styles.pickerLeftControl}>
               <View style={styles.selectMe}>
-                <TabNavigator {...listLandNatureProps} />
+                <TabNavigator{...listLandNatureProps} />
               </View>
             </View>
           </View>
-          <InputLabel label="建设用地面积" boardType="numeric" tabs="BuildLandAreas" getValue={this.getValue} value={paramsTransLand.BuildLandAreas.toString()} />
-          <InputLabel label="规划建筑面积" boardType="numeric" tabs="PlanBuildAreas" getValue={this.getValue} value={paramsTransLand.PlanBuildAreas.toString()} />
-          <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" getValue={this.getValue} value={paramsTransLand.GreeninGate.toString()} />
-          <InputLabel label="限高" boardType="numeric" tabs="HighLimit" getValue={this.getValue} value={paramsTransLand.HighLimit.toString()} />
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="建设用地面积" boardType="numeric" tabs="BuildLandAreas" tags="m²" getValue={this.getValue.bind(this)} value={this.state.BuildLandAreas.toString()} />
+          </View>
+          <View>
+            <Text allowFontScaling={false} style={styles.starView}>*</Text>
+            <InputLabel label="规划建筑面积" boardType="numeric" tabs="PlanBuildAreas" tags="m²" getValue={this.getValue.bind(this)} value={this.state.PlanBuildAreas.toString()} />
+          </View>
+          <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue.bind(this)} value={this.state.GreeninGate.toString()} />
+          <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue.bind(this)} value={this.state.HighLimit.toString()} />
           <View style={styles.pickerControlLeft}>
             <View style={styles.pickerTextContainerLeft}>
-              <Text style={styles.pickerTextLeft} >通平情况</Text>
+              <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
             </View>
             <View style={styles.pickerLeftControl}>
               <View style={styles.selectMe}>
-                <Text style={styles.selectMeRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.LevelingCondition}</Text>
+                <Text allowFontScaling={false} style={styles.selectMeRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.LevelingCondition}</Text>
               </View>
             </View>
           </View>
           <View style={styles.pickerControl}>
             <View style={styles.pickerTextContainer}>
-              <Text style={styles.pickerText} >拆迁情况</Text>
+              <Text allowFontScaling={false} style={styles.pickerText} >拆迁情况</Text>
             </View>
             <View style={styles.pickerLeftControl}>
               <View style={styles.selectMe}>
@@ -290,15 +312,32 @@ export default class TransLandEdit extends Component{
               </View>
             </View>
           </View>
+          <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.EstimateTransactionPrice.toString()} />
           <View style={styles.datepickerContainer}>
-            <Text style={styles.datePickerText}>预计转让时间</Text>
-            <TouchableHighlight
-                style={styles.datePickerRight}
-                onPress={this.showPicker.bind(this)}>
-              <Text style={styles.buttonText}>{this.state.EstimateTransferTime}</Text>
-            </TouchableHighlight>
+            <Text allowFontScaling={false} style={styles.datePickerText}>预计转让时间</Text>
+            {datePickerButton}
+            <Modal
+                visible={this.state.modalVisible}
+            >
+              <View style={styles.modal}>
+                <DatePickerIOS
+                    date={this.state.date}
+                    mode="date"
+                    timeZoneOffsetInMinutes={8 * 60}
+                    onDateChange={(date)=>this.setState({date: date})}
+                />
+                <View style={{width: Dimensions.get('window').width - 20}}>
+                  <ButtonControl
+                      userClick={()=>this.setState({modalVisible: false})}
+                      buttonStyle={styles.btnContainer}
+                      buttonTextStyle={styles.btnText}
+                      buttonText="确定"
+                  />
+                </View>
+              </View>
+            </Modal>
           </View>
-          <InputLabel label="预计交易价格" boardType="numeric" tabs="EstimateTransactionPrice" getValue={this.getValue} value={paramsTransLand.EstimateTransactionPrice.toString()} />
+
           <ButtonControl
               userClick={this._submit.bind(this)}
               buttonStyle={styles.btnContainer}
@@ -332,7 +371,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#efeff4',
     alignSelf: 'stretch'
-
+  },
+  starView:{
+    color:'red',
+    position:'absolute',
+    top:8,
+    left:5,
+    fontSize:15,
   },
   selectMe: {
     flex:7,
@@ -372,6 +417,7 @@ const styles = StyleSheet.create({
     flex:7,
     color:'#3b3b3b',
     fontSize:15,
+    marginLeft:5,
   },
   pickerTextRight: {
     flex:3,
@@ -391,6 +437,7 @@ const styles = StyleSheet.create({
   pickerText: {
     flex:3,
     color:'#3b3b3b',
+    marginLeft:5,
   },
   datePickerRight: {
     flex:7,
@@ -413,7 +460,22 @@ const styles = StyleSheet.create({
     flex:3,
     justifyContent: 'center',
     fontSize: 15,
-    color: '#3b3b3b'
+    color: '#3b3b3b',
+    marginLeft:5,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
+    backgroundColor: '#FFFFFF'
+  },
+  selectDate:{
+    flex:7,
+    marginRight:10,
+  },
+  dateTextIOS:{
+    fontSize:15,
+    color:'#a7a7a7',
   },
   datePicker: {
     flex:3,

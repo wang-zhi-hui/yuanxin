@@ -78,99 +78,99 @@ export default class RecommendDesc extends Component {
         <View style={styles.imgContainer}>
           <View style={styles.topItem}>
             <Image source={{uri: paramsRecommendDesc.StatusImageInfo[0].CommitUrl}} style={styles.topImg} />
-            <Text style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].CommitColor}]}>{paramsRecommendDesc.StatusImageInfo[0].CommitName}</Text>
+            <Text allowFontScaling={false} style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].CommitColor}]}>{paramsRecommendDesc.StatusImageInfo[0].CommitName}</Text>
           </View>
           <View style={styles.topItem}>
             <Image source={{uri: paramsRecommendDesc.StatusImageInfo[0].AppraiseUrl}} style={styles.topImg} />
-            <Text style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].AppraiseColor}]}>{paramsRecommendDesc.StatusImageInfo[0].AppraiseName}</Text>
+            <Text allowFontScaling={false} style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].AppraiseColor}]}>{paramsRecommendDesc.StatusImageInfo[0].AppraiseName}</Text>
           </View>
           <View style={styles.topItem}>
             <Image source={{uri: paramsRecommendDesc.StatusImageInfo[0].ProtocolUrl}} style={styles.topImg} />
-            <Text style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].ProtocolColor}]}>{paramsRecommendDesc.StatusImageInfo[0].ProtocolName}</Text>
+            <Text allowFontScaling={false} style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].ProtocolColor}]}>{paramsRecommendDesc.StatusImageInfo[0].ProtocolName}</Text>
           </View>
           <View style={styles.topItem}>
             <Image source={{uri: paramsRecommendDesc.StatusImageInfo[0].CommisionUrl}} style={styles.topImg} />
-            <Text style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].CommisionColor}]}>{paramsRecommendDesc.StatusImageInfo[0].CommisionName}</Text>
+            <Text allowFontScaling={false} style={[styles.topText, {color: paramsRecommendDesc.StatusImageInfo[0].CommisionColor}]}>{paramsRecommendDesc.StatusImageInfo[0].CommisionName}</Text>
           </View>
         </View>
         <View style={styles.greyLine}></View>
-        <ScrollView style={styles.viewContainer}>
+        <ScrollView style={styles.viewContainer} keyboardShouldPersistTaps={true}>
           <View style={styles.infoTop}>
             <View style={styles.h3Container}>
-              <Text style={styles.h3Text}>位置信息</Text>
+              <Text allowFontScaling={false} style={styles.h3Text}>位置信息</Text>
             </View>
             <View style={styles.bottomInfo}>
               <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>土地来源：</Text>
-                <Text style={styles.textRightItem}>{paramsRecommendDesc.LandSourcesName}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>土地来源：</Text>
+                <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.LandSourcesName}</Text>
               </View>
               <View style={styles.bottomInfoText}>
-                <Text style={styles.textLeftItem}>所在地区：</Text>
-                <Text style={styles.textRightItem}>{address}</Text>
+                <Text allowFontScaling={false} style={styles.textLeftItem}>所在地区：</Text>
+                <Text allowFontScaling={false} style={styles.textRightItem}>{address}</Text>
               </View>
               <View style={styles.bottomInfoText}>
-                <Text style={styles.textLeftItem}>详细地址：</Text>
-                <Text style={styles.textRightItem}>{paramsRecommendDesc.AddressDetail}</Text>
+                <Text allowFontScaling={false} style={styles.textLeftItem}>详细地址：</Text>
+                <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.AddressDetail}</Text>
               </View>
             </View>
           </View>
           <View style={styles.greyLine}></View>
           <View style={styles.infoBottom}>
             <View style={styles.h3Container}>
-              <Text style={styles.h3Text}>地块详情</Text>
+              <Text allowFontScaling={false} style={styles.h3Text}>地块详情</Text>
             </View>
             <View style={styles.bottomContain}>
               <View style={styles.bottomInfo}>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>四至：</Text><Text style={styles.textRightItem}>{paramsRecommendDesc.LandScope}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>四至：</Text>
+                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.LandScope}</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>用地性质：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.LandNatureName}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>用地性质：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.LandNatureName}</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>规划建筑面积：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.PlanBuildAreas}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>规划建筑面积：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.PlanBuildAreas}m²</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>绿化率：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.GreeninGate}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>建设用地面积：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.BuildLandAreas}m²</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>通平情况：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.MunicipalSupporName}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>绿化率：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.GreeninGate}</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>推出时间：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.LaunchTime}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>通平情况：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.MunicipalSupporName}</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>建设用地面积：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.BuildLandAreas}</Text>
+                    <Text allowFontScaling={false} style={styles.textLeftItem}>出让形式：</Text>
+                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.TransferFormName}</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                <Text style={styles.textLeftItem}>出让形式：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.TransferFormName}</Text>
+                  <Text allowFontScaling={false} style={styles.textLeftItem}>限高：</Text>
+                  <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.HighLimit}m</Text>
                 </View>
                 <View style={styles.bottomInfoText}>
-                  <Text style={styles.textLeftItem}>限高：</Text>
-                  <Text style={styles.textRightItem}>{paramsRecommendDesc.HighLimit}</Text>
-                </View>
-                <View style={styles.bottomInfoText}>
-                   <Text style={styles.textLeftItem}>拆迁情况：</Text>
-                   <Text style={styles.textRightItem}>{paramsRecommendDesc.DemolitionSituationName}</Text>
+                   <Text allowFontScaling={false} style={styles.textLeftItem}>拆迁情况：</Text>
+                   <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.DemolitionSituationName}</Text>
                  </View>
                 <View style={styles.bottomInfoText}>
-                    <Text style={styles.textLeftItem}>起始价：</Text>
-                    <Text style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}</Text>
+                    <Text allowFontScaling={false} style={styles.textLeftItem}>起始价：</Text>
+                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.StartingPrice}万元</Text>
                 </View>
-
+                <View style={styles.bottomInfoText}>
+                    <Text allowFontScaling={false} style={styles.textLeftItem}>推出时间：</Text>
+                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.LaunchTime}</Text>
+                </View>
               </View>
             </View>
           </View>
                 {this.state.btn}
             <View style={styles.btnWhite}>
-                <Text style={styles.btnadText}>
+                <Text allowFontScaling={false} style={styles.btnadText}>
                     kdsfk
                 </Text>
             </View>

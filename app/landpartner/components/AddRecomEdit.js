@@ -1,14 +1,17 @@
 import React, {
-  Component,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  DatePickerAndroid,
-  Picker,
-  ListView,
-  ScrollView,
-  View,
-    Dimensions
+    Component,
+    Dimensions,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    DatePickerAndroid,
+    DatePickerIOS,
+    Picker,
+    Modal,
+    ListView,
+    ScrollView,
+    View
 } from 'react-native'
 import InputLabel from './InputLabel'
 import ButtonControl from '../../control/ButtonControl'
@@ -24,20 +27,31 @@ export default class AddRecomEdit extends Component{
   constructor(props) {
     super(props)
     this.state = {
+      date: new Date(),
       actionName: '招拍挂',
-      LaunchTime: paramsAddRecom.LaunchTime,
+      LaunchTime: '请选择日期',
+      modalVisible: false,
       isShowSelectArea: 0,
       LandNature: [],
       AssignmentForm: [],
       RelocatesSituation: [],
-      LevelingCondition: paramsAddRecom.MunicipalSupporName
+      LevelingCondition: "请选择通平情况",
+      LandScope: paramsAddRecom.LandScope,
+      BuildLandAreas: paramsAddRecom.BuildLandAreas,
+      PlanBuildAreas: paramsAddRecom.PlanBuildAreas,
+      GreeninGate: paramsAddRecom.GreeninGate,
+      HighLimit: paramsAddRecom.HighLimit,
+      StartingPrice: paramsAddRecom.StartingPrice,
+      LandNatureCode: paramsAddRecom.LandNatureCode,
+      TransferFormCode: paramsAddRecom.TransferFormCode,
+      MunicipalSupportCode: paramsAddRecom.MunicipalSupportCode,
+      DemolitionSituationCode: paramsAddRecom.DemolitionSituationCode,
     }
   }
   componentWillMount() {
     StorageUtil.getStorageItem('Partner', (error, result) =>{
       if (result) {
         let partnerData = JSON.parse(result)
-
         let LandNature = []
         let AssignmentForm = []
         let RelocatesSituation = []
@@ -128,25 +142,25 @@ export default class AddRecomEdit extends Component{
   }
   getValue(value, label) {
     if (label == 'LandScope') {
-      typeinData.LandInfo.LandScope = value
+      this.state.LandScope = value
     }
     if (label == 'PlanBuildAreas') {
-      typeinData.LandInfo.PlanBuildAreas = value
+      this.state.PlanBuildAreas = value
     }
     if (label == 'BuildLandAreas') {
-      typeinData.LandInfo.BuildLandAreas = value
+      this.state.BuildLandAreas = value
     }
     if (label == 'GreeninGate') {
-      typeinData.LandInfo.GreeninGate = value
+      this.state.GreeninGate = value
     }
     if (label == 'HighLimit') {
-      typeinData.LandInfo.HighLimit = value
+      this.state.HighLimit = value
     }
     if (label == 'LaunchTime') {
-      typeinData.LandInfo.LaunchTime = value
+      this.state.LaunchTime = value
     }
     if (label == 'StartingPrice') {
-      typeinData.LandInfo.StartingPrice = value
+      this.state.StartingPrice = value
     }
   }
   _submit() {
@@ -212,7 +226,7 @@ export default class AddRecomEdit extends Component{
       }
       LandNature[item].selected = true
       this.state.LandNature = LandNature
-      typeinData.LandInfo.LandNatureCode = LandNature[item].code
+      this.state.LandNatureCode = LandNature[item].code
     }
     if (result == "AssignmentForm") {
       for (let item of AssignmentForm) {
@@ -220,7 +234,7 @@ export default class AddRecomEdit extends Component{
       }
       AssignmentForm[item].selected = true
       this.state.AssignmentForm = AssignmentForm
-      typeinData.LandInfo.TransferFormCode = AssignmentForm[item].code
+      this.state.TransferFormCode = AssignmentForm[item].code
     }
     if (result == "LevelingCondition") {
       for (let item of LevelingCondition) {
@@ -236,16 +250,15 @@ export default class AddRecomEdit extends Component{
       }
       RelocatesSituation[item].selected = true
       this.state.RelocatesSituation = RelocatesSituation
-      typeinData.LandInfo.DemolitionSituationCode = RelocatesSituation[item].code
+      this.state.DemolitionSituationCode = RelocatesSituation[item].code
     }
     this.setState(this.state)
   }
   showSelectDataReturn(id, name) {
     typeinData.LandInfo.MunicipalSupportCode = id
-    this.setState({
-      isShowSelectArea: 0,
-      LevelingCondition: name
-    })
+    this.state.isShowSelectArea = 0
+    this.state.LevelingCondition = name
+    this.setState(this.state)
   }
   render() {
     if (this.state.isShowSelectArea == 1) {
@@ -287,13 +300,27 @@ export default class AddRecomEdit extends Component{
         textColor: "#FF5001",
         textSelectedColor: "#FFFFFF"
       }
+      let datePickerButton
+      if (Platform.OS == 'ios') {
+        datePickerButton = <View style={styles.selectDate}>
+          <Text allowFontScaling={false} style={styles.dateTextIOS} onPress={()=>this.setState({modalVisible: true})}>{this.state.date.toLocaleDateString()}</Text>
+        </View>
+      } else {
+        datePickerButton = <TouchableHighlight
+            style={styles.datePicker}
+            onPress={this.showPicker.bind(this)}
+        >
+          <Text allowFontScaling={false} style={styles.dateText}>{this.state.LaunchTime}</Text>
+        </TouchableHighlight>
+      }
       return (
-          <ScrollView style={styles.viewContainer}>
+          <ScrollView style={styles.viewContainer} >
             <ActionBar actionName={this.state.actionName} isDefaultBack={this.props.jumpPop} />
-            <InputLabel label="四至" boardType="default" tabs="LandScope" getValue={this.getValue} value={paramsAddRecom.LandScope} />
+            <InputLabel label="四至" boardType="default" tabs="LandScope" getValue={this.getValue.bind(this)} value={this.state.LandScope} />
             <View style={styles.pickerControl}>
+              <Text allowFontScaling={false} style={styles.starView}>*</Text>
               <View style={styles.pickerTextContainer}>
-                <Text style={styles.pickerText} >用地性质</Text>
+                <Text allowFontScaling={false} style={styles.pickerText} >用地性质</Text>
               </View>
               <View style={styles.pickerLeftControl}>
                 <View style={styles.selectMe}>
@@ -301,11 +328,17 @@ export default class AddRecomEdit extends Component{
                 </View>
               </View>
             </View>
-            <InputLabel label="建设用地面积" boardType="numeric" tabs="BuildLandAreas" getValue={this.getValue} value={paramsAddRecom.BuildLandAreas.toString()} />
-            <InputLabel label="规划建筑面积" boardType="numeric" tabs="PlanBuildAreas" getValue={this.getValue} value={paramsAddRecom.PlanBuildAreas.toString()} />
+            <View>
+              <Text allowFontScaling={false} style={styles.starView}>*</Text>
+              <InputLabel label="建设用地面积" boardType="numeric" tabs="BuildLandAreas" tags="m²" getValue={this.getValue.bind(this)} value={this.state.BuildLandAreas.toString()} />
+            </View>
+            <View>
+              <Text allowFontScaling={false} style={styles.starView}>*</Text>
+              <InputLabel label="规划建筑面积" boardType="numeric" tabs="PlanBuildAreas" tags="m²" getValue={this.getValue.bind(this)} value={this.state.PlanBuildAreas.toString()} />
+            </View>
             <View style={styles.pickerControl}>
               <View style={styles.pickerTextContainer}>
-                <Text style={styles.pickerText} >出让形式</Text>
+                <Text allowFontScaling={false} style={styles.pickerText} >出让形式</Text>
               </View>
               <View style={styles.pickerLeftControl}>
                 <View style={styles.selectMe}>
@@ -313,21 +346,21 @@ export default class AddRecomEdit extends Component{
                 </View>
               </View>
             </View>
-            <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" getValue={this.getValue} value={paramsAddRecom.GreeninGate.toString()} />
-            <InputLabel label="限高" boardType="numeric" tabs="HighLimit" getValue={this.getValue} value={paramsAddRecom.HighLimit.toString()} />
+            <InputLabel label="绿化率" boardType="numeric" tabs="GreeninGate" tags="%" getValue={this.getValue.bind(this)} value={this.state.GreeninGate.toString()} />
+            <InputLabel label="限高" boardType="numeric" tabs="HighLimit" tags="m" getValue={this.getValue.bind(this)} value={this.state.HighLimit.toString()} />
             <View style={styles.pickerControlLeft}>
               <View style={styles.pickerTextContainerLeft}>
-                <Text style={styles.pickerTextLeft} >通平情况</Text>
+                <Text allowFontScaling={false} style={styles.pickerTextLeft} >通平情况</Text>
               </View>
               <View style={styles.pickerLeftControl}>
                 <View style={styles.selectMe}>
-                  <Text style={styles.selectMeRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.LevelingCondition}</Text>
+                  <Text allowFontScaling={false} style={styles.selectMeRight} onPress={()=>this.setState({isShowSelectArea: 1})}>{this.state.LevelingCondition}</Text>
                 </View>
               </View>
             </View>
             <View style={styles.pickerControl}>
               <View style={styles.pickerTextContainer}>
-                <Text style={styles.pickerText} >拆迁情况</Text>
+                <Text allowFontScaling={false} style={styles.pickerText} >拆迁情况</Text>
               </View>
               <View style={styles.pickerLeftControl}>
                 <View style={styles.selectMe}>
@@ -335,17 +368,7 @@ export default class AddRecomEdit extends Component{
                 </View>
               </View>
             </View>
-            <View style={styles.datepickerContainer}>
-              <View style={styles.pickerTextContainer}>
-                <Text style={styles.pickerTextRight} >推出时间</Text>
-              </View>
-              <TouchableHighlight
-                  style={styles.datePicker}
-                  onPress={this.showPicker.bind(this)}>
-                <Text style={styles.dateText}>{this.state.LaunchTime}</Text>
-              </TouchableHighlight>
-            </View>
-            <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" getValue={this.getValue} value={paramsAddRecom.StartingPrice.toString()} />
+            <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.StartingPrice.toString()} />
 
             <ButtonControl
                 userClick={this._submit.bind(this)}
@@ -382,6 +405,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#efeff4',
     alignSelf: 'stretch'
+  },
+  starView:{
+    color:'red',
+    position:'absolute',
+    top:8,
+    left:5,
+    fontSize:15,
   },
   selectMe: {
     flex:7,
@@ -433,17 +463,20 @@ const styles = StyleSheet.create({
     flex:3,
     color:'#3b3b3b',
     fontSize:15,
+    marginLeft:5,
   },
   pickerTextLeft: {
     flex:7,
     color:'#3b3b3b',
     fontSize:15,
+    marginLeft:5,
   },
   pickerTextRight: {
     flex:3,
     color:'#3b3b3b',
     fontSize:15,
     marginTop:10,
+    marginLeft:5,
   },
   datepickerContainer: {
     height: 40,
@@ -473,6 +506,21 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 15,
     color: '#a7a7a7'
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: Dimensions.get('window').height,
+    backgroundColor: '#FFFFFF'
+  },
+  selectDate:{
+    flex:7,
+    marginRight:10,
+  },
+  dateTextIOS:{
+    fontSize:15,
+    color:'#a7a7a7',
+    marginTop:10,
   },
   btnGroup: {
     flexDirection: 'row',
