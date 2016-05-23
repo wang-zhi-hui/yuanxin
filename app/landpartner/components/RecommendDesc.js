@@ -31,10 +31,10 @@ export default class RecommendDesc extends Component {
         this.props.maskViewHandler(false)
         if (JSON.parse(response.message).status == 'SUCCESS') {
           Util.AlertMessage("保存成功")
-          this.props.jumpPop()
+            this.props.navigator.popToTop()
         } else {
           Util.AlertMessage("保存失败")
-          this.props.jumpPop()
+            this.props.navigator.popToTop()
         }
       }
     })
@@ -70,6 +70,13 @@ export default class RecommendDesc extends Component {
     let address = paramsRecommendDesc.Province + '   ' + paramsRecommendDesc.City + '   '
     if (paramsRecommendDesc.County) {
       address += paramsRecommendDesc.County
+    }
+    let TransferFormName
+    if (paramsRecommendDesc.TransferFormName) {
+        TransferFormName = <View style={styles.bottomInfoText}>
+            <Text allowFontScaling={false} style={styles.textLeftItem}>出让形式：</Text>
+            <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.TransferFormName}</Text>
+        </View>
     }
     return (
 
@@ -145,10 +152,7 @@ export default class RecommendDesc extends Component {
                   <Text allowFontScaling={false} style={styles.textLeftItem}>通平情况：</Text>
                   <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.MunicipalSupporName}</Text>
                 </View>
-                <View style={styles.bottomInfoText}>
-                    <Text allowFontScaling={false} style={styles.textLeftItem}>出让形式：</Text>
-                    <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.TransferFormName}</Text>
-                </View>
+                  {TransferFormName}
                 <View style={styles.bottomInfoText}>
                   <Text allowFontScaling={false} style={styles.textLeftItem}>限高：</Text>
                   <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.HighLimit}m</Text>

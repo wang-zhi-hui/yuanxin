@@ -35,7 +35,7 @@ export default class TransLandEdit extends Component{
       isShowSelectArea: 0,
       LandNature: [],
       RelocatesSituation: [],
-      LevelingCondition: "请选择通平情况",
+      LevelingCondition: paramsTransLand.MunicipalSupporName,
       LandScope: paramsTransLand.LandScope,
       BuildLandAreas: paramsTransLand.BuildLandAreas,
       PlanBuildAreas: paramsTransLand.PlanBuildAreas,
@@ -48,7 +48,16 @@ export default class TransLandEdit extends Component{
     }
   }
   _submit() {
-    typeinData.OperationType = 0
+    if (!typeinData.LandInfo.LandNatureCode) {
+      return Util.AlertMessage('请选择用地性质')
+    }
+    if (!typeinData.LandInfo.BuildLandAreas) {
+      return Util.AlertMessage('请填写建筑用地面积')
+    }
+    if (!typeinData.LandInfo.PlanBuildAreas) {
+      return Util.AlertMessage('请填写用规划建筑面积')
+    }
+    typeinData.OperationType = 1
     if (this.state.LaunchTime != '请选择日期') {
       typeinData.LandInfo.LaunchTime = this.state.LaunchTime
     }
@@ -61,15 +70,7 @@ export default class TransLandEdit extends Component{
     typeinData.LandInfo.LandNatureCode = this.state.LandNatureCode
     typeinData.LandInfo.MunicipalSupporCode = this.state.MunicipalSupporCode
     typeinData.LandInfo.DemolitionSituationCode = this.state.DemolitionSituationCode
-    if (typeinData.LandInfo.LandNatureCode == '') {
-      return Util.AlertMessage('用地性质不能为空')
-    }
-    if (typeinData.LandInfo.BuildLandAreas == '') {
-      return Util.AlertMessage('请填写建筑用地面积')
-    }
-    if (typeinData.LandInfo.PlanBuildAreas == '') {
-      return Util.AlertMessage('请填写用规划建筑面积')
-    }
+
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
       url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
@@ -202,7 +203,7 @@ export default class TransLandEdit extends Component{
       }
       LandNature[item].selected = true
       this.state.LandNature = LandNature
-      typeinData.LandInfo.LandNatureCode = LandNature[item].code
+      this.state.LandNatureCode = LandNature[item].code
     }
     if (result == "RelocatesSituation") {
       for (let item of RelocatesSituation) {
@@ -210,17 +211,18 @@ export default class TransLandEdit extends Component{
       }
       RelocatesSituation[item].selected = true
       this.state.RelocatesSituation = RelocatesSituation
-      typeinData.LandInfo.DemolitionSituationCode = RelocatesSituation[item].code
+      this.state.DemolitionSituationCode = RelocatesSituation[item].code
     }
     this.setState(this.state)
   }
   showSelectDataReturn(id, name) {
-    typeinData.LandInfo.MunicipalSupportCode = id
+    this.state.MunicipalSupportCode = id
     this.state.isShowSelectArea = 0
     this.state.LevelingCondition = name
     this.setState(this.state)
   }
   render() {
+    console.log(paramsTransLand)
     if (this.state.isShowSelectArea == 1) {
       let selectDataProps = {
         tag: 'LevelingCondition',

@@ -309,7 +309,7 @@ export default class AddRecom extends Component{
     this.setState(this.state)
   }
   showSelectDataReturn(id, name) {
-    typeinData.LandInfo.MunicipalSupportCode = id
+    this.state.MunicipalSupportCode = id
     this.state.isShowSelectArea = 0
     this.state.LevelingCondition = name
     this.state.LandScope = typeinData.LandInfo.LandScope

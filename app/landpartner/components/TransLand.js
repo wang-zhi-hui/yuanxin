@@ -93,7 +93,7 @@ export default class TransLand extends Component{
       typeinData.LandInfo.HighLimit = value
     }
     if (label == 'EstimateTransactionPrice') {
-      typeinData.LandInfo.StartingPrice = value
+      typeinData.LandInfo.EstimateTransactionPrice = value
     }
   }
   componentWillMount() {
@@ -198,7 +198,7 @@ export default class TransLand extends Component{
       }
       LevelingCondition[item].selected = true
       this.state.LevelingCondition = LevelingCondition
-      typeinData.LandInfo.MunicipalSupportCode = LevelingCondition[item].code
+      this.state.MunicipalSupportCode = LevelingCondition[item].code
     }
     if (result == "RelocatesSituation") {
       for (let item of RelocatesSituation) {
@@ -211,7 +211,7 @@ export default class TransLand extends Component{
     this.setState(this.state)
   }
   showSelectDataReturn(id, name) {
-    typeinData.LandInfo.MunicipalSupportCode = id
+    this.state.MunicipalSupportCode = id
     this.state.isShowSelectArea = 0
     this.state.LevelingCondition = name
     this.state.LandScope = typeinData.LandInfo.LandScope

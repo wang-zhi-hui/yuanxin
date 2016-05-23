@@ -35,7 +35,7 @@ export default class AddRecomEdit extends Component{
       LandNature: [],
       AssignmentForm: [],
       RelocatesSituation: [],
-      LevelingCondition: "请选择通平情况",
+      LevelingCondition: paramsAddRecom.MunicipalSupporName,
       LandScope: paramsAddRecom.LandScope,
       BuildLandAreas: paramsAddRecom.BuildLandAreas,
       PlanBuildAreas: paramsAddRecom.PlanBuildAreas,
@@ -164,9 +164,19 @@ export default class AddRecomEdit extends Component{
     }
   }
   _submit() {
+    if (!typeinData.LandInfo.LandNatureCode) {
+      return Util.AlertMessage('请选择用地性质')
+    }
+    if (!typeinData.LandInfo.BuildLandAreas) {
+      return Util.AlertMessage('请填写建筑用地面积')
+    }
+    if (!typeinData.LandInfo.PlanBuildAreas) {
+      return Util.AlertMessage('请填写用规划建筑面积')
+    }
     if (this.state.LaunchTime != '请选择日期') {
       typeinData.LandInfo.LaunchTime = this.state.LaunchTime
     }
+    typeinData.OperationType = 1
     typeinData.LandInfo.Code = paramsAddRecom.Code
     typeinData.LandInfo.LandSourcesCode = paramsAddRecom.LandSourcesCode
     typeinData.LandInfo.Province = paramsAddRecom.Province
@@ -177,15 +187,7 @@ export default class AddRecomEdit extends Component{
     typeinData.LandInfo.MunicipalSupportCode = this.state.MunicipalSupportCode
     typeinData.LandInfo.DemolitionSituationCode = this.state.DemolitionSituationCode
     typeinData.LandInfo.TransferFormCode = this.state.TransferFormCode
-    if (!typeinData.LandInfo.LandNatureCode) {
-      return Util.AlertMessage('请选择用地性质')
-    }
-    if (!typeinData.LandInfo.BuildLandAreas) {
-      return Util.AlertMessage('请填写建筑用地面积')
-    }
-    if (!typeinData.LandInfo.PlanBuildAreas) {
-      return Util.AlertMessage('请填写用规划建筑面积')
-    }
+
     this.props.maskViewHandler(true)
     this.props.sendPostJSON({
       url: 'http://mobiletest.yuanxin2015.com/LandPartnerAPI/api/LandInfo/UpdateLandInfoToLandDataBaseAndSeagull2DataBase',
@@ -255,7 +257,7 @@ export default class AddRecomEdit extends Component{
     this.setState(this.state)
   }
   showSelectDataReturn(id, name) {
-    typeinData.LandInfo.MunicipalSupportCode = id
+    this.state.MunicipalSupportCode = id
     this.state.isShowSelectArea = 0
     this.state.LevelingCondition = name
     this.setState(this.state)
@@ -369,6 +371,33 @@ export default class AddRecomEdit extends Component{
               </View>
             </View>
             <InputLabel label="起始价" boardType="numeric" tabs="StartingPrice" tags="万元" getValue={this.getValue.bind(this)} value={this.state.StartingPrice.toString()} />
+            <View style={styles.datepickerContainer}>
+              <View style={styles.pickerTextContainer}>
+                <Text allowFontScaling={false} style={styles.pickerTextRight} >推出时间</Text>
+              </View>
+              {datePickerButton}
+
+              <Modal
+                  visible={this.state.modalVisible}
+              >
+                <View style={styles.modal}>
+                  <DatePickerIOS
+                      date={this.state.date}
+                      mode="date"
+                      timeZoneOffsetInMinutes={8 * 60}
+                      onDateChange={(date)=>this.setState({date: date})}
+                  />
+                  <View style={{width: Dimensions.get('window').width - 20}}>
+                    <ButtonControl
+                        userClick={()=>this.setState({modalVisible: false})}
+                        buttonStyle={styles.btnContainer}
+                        buttonTextStyle={styles.btnText}
+                        buttonText="确定"
+                    />
+                  </View>
+                </View>
+              </Modal>
+            </View>
 
             <ButtonControl
                 userClick={this._submit.bind(this)}
@@ -376,6 +405,7 @@ export default class AddRecomEdit extends Component{
                 buttonTextStyle={styles.btnText}
                 buttonText="提交"
             />
+
           </ScrollView>
       )
     }
