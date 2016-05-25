@@ -95,7 +95,7 @@ var CompanyUserManager = React.createClass({
             return (
                 <Swipeout close={!rowData.active} onOpen={(sectionID, rowID) => this._handleSwipeout(sectionID, rowID)}
                           right={deleteButton}>
-                    <CompanyUserItem _delete={this._delete} userInfo={rowData}/>
+                    <CompanyUserItem _delete={this._delete} userInfo={rowData} {...this.props} {{loginName:this.props.userInfo.loginName}}/>
                 </Swipeout>
             );
         }
