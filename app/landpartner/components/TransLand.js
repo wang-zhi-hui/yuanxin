@@ -53,7 +53,7 @@ export default class TransLand extends Component{
       return Util.AlertMessage('请选择用地性质')
     }
     if (!typeinData.LandInfo.BuildLandAreas) {
-      return Util.AlertMessage('请填写建筑用地面积')
+      return Util.AlertMessage('请填写建设用地面积')
     }
     if (!typeinData.LandInfo.PlanBuildAreas) {
       return Util.AlertMessage('请填写用规划建筑面积')
