@@ -78,6 +78,24 @@ export default class RecommendDesc extends Component {
             <Text allowFontScaling={false} style={styles.textRightItem}>{paramsRecommendDesc.TransferFormName}</Text>
         </View>
     }
+    let operationList = null
+    if (paramsRecommendDesc.OperationList) {
+      let lists = []
+      for (let item of paramsRecommendDesc.OperationList) {
+        lists.push(<Text style={styles.operateText}>{item}</Text>)
+      }
+      operationList =
+      <View>
+        <View style={styles.h3Container}>
+          <Text allowFontScaling={false} style={styles.h3Text}>状态信息</Text>
+        </View>
+        <View style={styles.operate}>
+          {lists}
+        </View>
+
+        <View style={styles.greyLine}></View>
+      </View>
+    }
     return (
 
       <View style={styles.container}>
@@ -102,6 +120,7 @@ export default class RecommendDesc extends Component {
         </View>
         <View style={styles.greyLine}></View>
         <ScrollView style={styles.viewContainer} keyboardShouldPersistTaps={true}>
+          {operationList}
           <View style={styles.infoTop}>
             <View style={styles.h3Container}>
               <Text allowFontScaling={false} style={styles.h3Text}>位置信息</Text>
@@ -221,6 +240,13 @@ const styles = StyleSheet.create({
    infoTop: {
      width: Dimensions.get('window').width,
      flexDirection: 'column'
+   },
+   operate: {
+     padding: 10,
+   },
+   operateText: {
+     color: "#3b3b3b",
+     fontSize: 15,
    },
    h3Container: {
      borderBottomWidth: 1,

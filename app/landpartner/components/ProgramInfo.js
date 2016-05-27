@@ -129,14 +129,15 @@ var ProgramInfo = React.createClass({
       this.state.photoArray = tempPhotoArray
       this.setState(this.state)
       typeinData.ProjectImageInfoList.push({ImageUrl: this.state.photoArray[0].UpdateLoadUrl})
-      this.props.sendPostJSON({
-        url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
-        body: JSON.stringify(typeinData),
-        success: (response) => {
-          this.props.maskViewHandler(false)
-
-        }
-      })
+      // this.props.sendPostJSON({
+      //   url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/InsertLandInfo',
+      //   body: JSON.stringify(typeinData),
+      //   success: (response) => {
+      //     this.props.maskViewHandler(false)
+      //
+      //   }
+      // })
+      this.submitMerchant()
   },
   submitMerchant(){
     this.props.sendPostJSON({
@@ -145,11 +146,19 @@ var ProgramInfo = React.createClass({
       success: (response) => {
         this.props.maskViewHandler(false)
         if (JSON.parse(response.message).status == 'SUCCESS') {
-          Util.AlertMessage("保存成功")
+          if (typeinData.OperationType == 1) {
+            Util.AlertMessage("提交成功")
+          } else {
+            Util.AlertMessage("保存成功")
+          }
           this.props.navigator.popToTop()
         } else {
-          Util.AlertMessage("保存失败")
-          this.props.jumpReplacePage(Recommend, 'recommend')
+          if (typeinData.OperationType == 1) {
+            Util.AlertMessage("提交失败")
+          } else {
+            Util.AlertMessage("保存失败")
+          }
+          this.props.navigator.popToTop()
         }
       }
     })
@@ -167,18 +176,18 @@ var ProgramInfo = React.createClass({
 
   },
   checkFileSuccess(fileList){
-    let isAllSuccess = true;
+    let isAllSuccess = true
     for (let i = 0; i < fileList.length; i++) {
       if (!fileList[i].UpdateLoadUrl) {
-        isAllSuccess = false;
+        isAllSuccess = false
       }
     }
-    return isAllSuccess;
+    return isAllSuccess
   },
   checkAllFileSuccess(){
     let photoArray = this.checkFileSuccess(this.state.photoArray);
     if (photoArray) {
-      this.submitMerchant();
+      this.submitMerchant()
     }
   },
   uploadFileSuccess(e){
@@ -187,7 +196,7 @@ var ProgramInfo = React.createClass({
       else
           this.uploadFileOneSuccess(e);
   },
-  
+
   deleteSelectPhone(url, tag){
     if (tag == 'photoArray') {
         for (let i = 0; i < this.state.photoArray.length; i++) {

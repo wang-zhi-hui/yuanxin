@@ -21,7 +21,10 @@ var Partner = React.createClass({
   componentWillMount() {
     this.props.sendPostJSON({
       url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/GenerateDataDictionary',
-      success: (response) => StorageUtil.setStorageItem('Partner', response.message)
+      success: (response) => {
+        StorageUtil.setStorageItem('Partner', response.message)
+        StorageUtil.setStorageItem('Area_Landpartner', JSON.stringify(JSON.parse(response.message).area))
+      }
     })
 
   },

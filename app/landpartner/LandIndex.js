@@ -131,7 +131,7 @@ var LandIndex = React.createClass({
 
 	},
 	render() {
-
+		StorageUtil.getStorageItem('Area_Landpartner', (error, result)=>console.log(result))
 		if (this.state.isShowSelectArea != 0) {
 			let actionBarProp = {
 				actionName: "土地合伙人",
@@ -142,7 +142,7 @@ var LandIndex = React.createClass({
 			}
 			let selectDataProps = {
 				tag: 'area',
-				storageKey: StorageUtil.AreaList,
+				storageKey: 'Area_Landpartner',
 				returnData: this.showSelectDataReturn
 			}
 			return (

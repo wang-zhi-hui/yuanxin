@@ -26,8 +26,7 @@ var Recommend = React.createClass({
         url: 'http://www.yuanxin2015.com/MobileBusiness/LandInfoService/api/LandInfo/LoadRecommendList',
         body: JSON.stringify({pageIndex: 1, pageSize: 10}),
         success: (response) => {
-          console.log(JSON.parse(response.message).data.LandInfo)
-          // this.setState({dataSource: ds.cloneWithRows(JSON.parse(response.message).data.LandInfo)})
+          console.log(response.message)
           this.setState({dataSource: JSON.parse(response.message).data.LandInfo})
           this.props.maskViewHandler(false)
         }
