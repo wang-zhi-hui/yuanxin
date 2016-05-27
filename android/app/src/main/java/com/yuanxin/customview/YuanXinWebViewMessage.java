@@ -41,7 +41,7 @@ public class YuanXinWebViewMessage extends ReactContextBaseJavaModule {
             i.addCategory(Intent.CATEGORY_OPENABLE);
             i.setType("image/*");
             getCurrentActivity().startActivityForResult(
-                    Intent.createChooser(i, "sd"),
+                    Intent.createChooser(i, "选择图片"),
                     YuanXinCommon.ActivityForResultCode.FILECHOOSER_RESULTCODE);
         }
 

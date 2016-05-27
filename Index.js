@@ -43,13 +43,17 @@ var Index = React.createClass({
     sendPostJSON(postProps){
         postProps.userToken = this.getCurrUserInfo().access_token;
         postProps.errorFun = (error)=>this.sendError(error);
-        Util.HttpHelper.SendJSon(postProps).then((responseObj)=>{
+        Util.HttpHelper.SendJSon(postProps).then((responseObj)=> {
             if (!postProps.special) {
-                if (responseObj.code == 200) {
+                if (!responseObj) {
+                    this.maskViewHandler(false);
+                    Util.AlertMessage('500');
+                }
+                else if (responseObj.code && responseObj.code == 200) {
                     postProps.success(responseObj);
                 }
                 else if (responseObj.code == 401) {
-                    this.getRefreshUserInfo(()=>{
+                    this.getRefreshUserInfo(()=> {
                         this.sendPostJSON(postProps);
                     });
                 }
@@ -59,7 +63,7 @@ var Index = React.createClass({
                 }
             }
             else
-                postProps.success(responseObj);
+                postProps.success(responseObj || {message: '', code: 500});
         });
     },
     componentWillUnmount() {
@@ -145,7 +149,15 @@ var Index = React.createClass({
         }.bind(this));
         // TODO: add support for CodePush on Android
         const CodePush = require('react-native-code-push');
-        CodePush.sync({rollbackTimeout: 3000});
+
+        CodePush.checkForUpdate()
+            .then((update) => {
+                if (update) {
+                    CodePush.sync({rollbackTimeout: 3000});
+                }
+            });
+
+
     },
     maskViewHandler(isShow){
         this.state.isShowMaskView = isShow;
@@ -192,10 +204,11 @@ var Index = React.createClass({
             body: 'grant_type=refresh_token&refresh_token=' + this.getCurrUserInfo().refresh_token + '&client_id=' + ConfigUtil.basic.appID,
             errorFun: (error)=>this.errorFun(error)
         };
-        Util.HttpHelper.SendJSon(refreshUserInfoProps).then((result)=>{
-            if (result.code == 200) {
-                if (result.message.toString().indexOf('error') == -1 && result.message.toString().indexOf('token') != -1) {
-                    var refreshUser = JSON.parse(result.message);
+        Util.HttpHelper.SendJSon(refreshUserInfoProps).then((result)=> {
+            if (result && result.code == 200) {
+                if (result.message.toString().indexOf('error') == -1
+                    && result.message.toString().indexOf('token') != -1) {
+                    let refreshUser = JSON.parse(result.message);
                     StorageUtil.setStorageItem(StorageUtil.OAuthToken, result.message);
                     currUserInfo = refreshUser;
                     if (callback) {
@@ -209,7 +222,6 @@ var Index = React.createClass({
                     Util.AlertMessage(ConfigUtil.InnerText.loginTimeOutError);
                     this.jumpReplacePage(UserLogin, 'userlogin');
                 }
-
             }
             else {
                 this.maskViewHandler(false);
@@ -227,7 +239,7 @@ var Index = React.createClass({
     },
     RouteManager: function (route, navigationOperations, onComponentRef) {
         navigator = navigationOperations;
-        var viewProps = {
+        let viewProps = {
             navigator: navigationOperations,
             maskViewHandler: this.maskViewHandler,
             getCurrUserInfo: this.getCurrUserInfo,

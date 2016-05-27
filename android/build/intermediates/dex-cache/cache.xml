@@ -5,8 +5,15 @@
         jar="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/exploded-aar/YuanXin/react-native-webview-bridge/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="9eefb08db9c282e7ee754793003e37f00b04644f">
+        sha1="6f362248eb45d4e9aeb60799e85c3ca4b8831e73">
         <dex dex="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/pre-dexed/debug/classes-5f922471abf00522cb87c2c7983ca893c707132f.jar" />
+    </item>
+    <item
+        jar="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/exploded-aar/YuanXin/react-native-code-push/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ec2621a4677a355d01cfba01968d24dc7c7f7689">
+        <dex dex="/Users/lemon/Documents/YuanXin/NativeApp/android/app/build/intermediates/pre-dexed/debug/classes-6100b4e346d1f27ba2f649db0ffbeb7ebed8c27f.jar" />
     </item>
 
 </items>

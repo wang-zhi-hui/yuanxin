@@ -2,7 +2,6 @@
 var React = require('react-native');
 
 var {
-    AppRegistry,
     Component,
     StyleSheet,
     Text,
@@ -68,7 +67,7 @@ var InitApp = React.createClass({
                         errorFun: (error)=>this.getHtttpError(error)
                     }
                     Util.HttpHelper.SendGetJSon(postProps).then((responseText)=>{
-                        if (responseText.code == 200) {
+                        if (responseText&&responseText.code == 200) {
                             StorageUtil.setStorageItem(StorageUtil.AreaList, responseText.message.toString());
                             isLoadArea = true;
                             if (isLoadArea && isLoadData && !this.state.isLoadSuccess) {
@@ -99,7 +98,7 @@ var InitApp = React.createClass({
                 errorFun: (error)=>this.getHtttpError(error)
             };
             Util.HttpHelper.SendGetJSon(postProps).then((responseText)=>{
-                if (responseText.code == 200) {
+                if (responseText&&responseText.code == 200) {
                     var basicsData = JSON.parse(responseText.message);
                     StorageUtil.setStorageItem(StorageUtil.BusinesType, JSON.stringify(basicsData.Business));
                     StorageUtil.setStorageItem(StorageUtil.FunctionalModules, JSON.stringify(basicsData.FunctionalModules));

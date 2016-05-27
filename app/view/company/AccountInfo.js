@@ -23,7 +23,8 @@ import StyleUtil from '../../utils/StyleUtil';
 import SelectPhotoUtil from '../../utils/SelectPhotoUtil';
 import OSSUtil from '../../utils/OSSUtil';
 import TouchRowTextControl from '../../control/TouchRowTextControl';
-//import ImageControl from '../../control/ImageControl';
+var ImageControl= require('../../control/ImageControl');
+var Util=require('../../utils/Util');
 //import UpdateMobileNumber from'../user/UpdateMobileNumber';
 //import UpdateUserInfo  from'../user/UpdateUserInfo';
 export default class AccountInfo extends Component{
@@ -36,22 +37,32 @@ export default class AccountInfo extends Component{
       }
     componentDidMount(){
         InteractionManager.runAfterInteractions(() => {
-            this.getUserInfo();
+            this.getCurrentUserInfo();
         });
     }
-    getUserInfo(){
-        this.props.maskViewHandler(true);//等待圈显示
-        this.props.sendPostJSON({
-            url: ConfigUtil.netWorkApi.getUserInfo,
-            body:"loginName="+this.props.params.loginName,
-            success: (responseText)=>this.successFun(responseText)
-        });
+    getCurrentUserInfo(){
+        var postProps={
+            url:ConfigUtil.netWorkApi.getUserInfo+'?userID='+this.props.params.loginName,
+            userToken:this.props.getCurrUserInfo().access_token,
+        }
+        this.props.maskViewHandler(true);
+        Util.HttpHelper.SendGetJSon(postProps)
+            .then(result=>this.successFun(result));
     }
+    //getUserInfo(){
+    //    this.props.maskViewHandler(true);//
+    //    this.props.sendPostJSON({
+    //        url: ConfigUtil.netWorkApi.getUserInfo,
+    //        body:"userID="+this.props.params.loginName,
+    //        success: (responseText)=>this.successFun(responseText)
+    //    });
+    //}
     successFun(result){
+        console.log(result);
         this.props.maskViewHandler(false);
-        this.state.userInfo = JSON.parse(result.message);
+        this.state.userInfo = JSON.parse(result.message).result;
         this.setState(this.state);
-
+        console.log(this.state.userInfo);
     }
 
     render(){
